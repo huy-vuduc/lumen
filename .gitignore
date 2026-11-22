@@ -1,0 +1,5 @@
+.DS_Store
+.claude/
+# Earlier prototypes, superseded by lumen/
+light-flow/
+cut-wires/

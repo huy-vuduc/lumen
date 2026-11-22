@@ -1,0 +1,65 @@
+/* Gameplay screen and SVG board pieces. Sizes follow the design's 50-unit cell. */
+.game { align-items: center; }
+.game-header { height: 72px; border: 0; background: none; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: inherit; }
+.game-header .chamber { font-size: 28px; line-height: 36px; font-weight: 500; }
+.rule { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; min-height: 26px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; font-weight: 500; }
+.chip i { width: 16px; height: 16px; border-radius: 50%; display: inline-block; background: var(--c); box-shadow: 0 0 0 1.5px var(--k, rgba(63, 86, 112, 0.18)), 0 1px 3px rgba(63, 86, 112, 0.22); }
+.op { font-size: 13px; color: var(--muted); }
+.board-wrap { width: 100%; }
+.board { display: block; width: 100%; aspect-ratio: 1; max-width: 100%; border-radius: 28px; background: var(--board-tint, var(--board)); box-shadow: 0 18px 40px rgba(var(--shadow), 0.1), inset 0 0 0 1px rgba(var(--shadow), 0.07); overflow: hidden; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+.board .fog { filter: blur(7px); pointer-events: none; }
+.board .fog-cell { transition: opacity 0.9s ease-out; }
+.board .wall { fill: #C3CCD6; filter: drop-shadow(0 2.5px 0 rgba(63, 86, 112, 0.22)); }
+.board .mirror { cursor: pointer; outline: none; }
+.board .mirror-tile { fill: #fff; filter: drop-shadow(0 6px 10px rgba(63, 86, 112, 0.16)) drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); transition: fill 0.9s; }
+.board .mirror .mirror-bar { fill: var(--ink); transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), fill 0.9s; }
+.board .mirror-tile.fogged { fill: #E8ECF0; filter: none; stroke: rgba(63, 86, 112, 0.18); stroke-width: 1.5; }
+.board .mirror.fogged .mirror-bar { fill: #6A747F; }
+.board .mirror:focus-visible .mirror-hit { stroke: var(--accent); stroke-width: 2; rx: 11; }
+.board .source-disc { fill: #fff; filter: drop-shadow(0 6px 10px rgba(63, 86, 112, 0.16)) drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); }
+.board .target .ring { transition: stroke 0.5s, fill 0.9s; }
+.board .target.fogged .ring { fill: #E8ECF0; }
+.board .target .core { opacity: 0; transition: opacity 0.5s, r 0.5s; }
+.board .target.lit .core, .board .target.wrong .core { opacity: 1; }
+.board .beam { stroke-dasharray: 1; stroke-dashoffset: 0; }
+@keyframes beam-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+.hint-pop { position: absolute; left: 0; right: 0; bottom: calc(var(--pad-bottom) + 110px); box-sizing: border-box; padding: 18px 20px; border-radius: 22px; background: var(--surface); box-shadow: 0 18px 40px rgba(var(--shadow), 0.18); display: flex; flex-direction: column; gap: 10px; z-index: 2; }
+.hint-line { display: flex; align-items: center; gap: 12px; }
+.hint-line .caption { color: var(--ink); }
+.hint-icon.board { flex: none; width: 34px; height: 34px; aspect-ratio: auto; border-radius: 10px; box-shadow: none; overflow: visible; background: var(--board-tint, var(--board)); }
+.hint-pop .hint-title { font-size: 13px; line-height: 18px; font-weight: 600; }
+.formula { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.game-footer { width: 100%; height: 96px; display: flex; align-items: center; justify-content: space-between; }
+.counter { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.counter .numeral { font-size: 34px; line-height: 36px; font-weight: 500; font-variant-numeric: tabular-nums; transition: color 0.3s; }
+.counter.warning .numeral, .counter.warning .micro { color: var(--warn); }
+.counter .pips { margin-top: 4px; }
+.counter .pips span { width: 6px; height: 6px; background: var(--ink); border-color: var(--ink); }
+.counter .pips span.spent { background: none; border-color: #77828F; }
+.game-solved { width: 100%; height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 14px; }
+.game-solved .status { font-size: 18px; line-height: 26px; font-weight: 500; }
+
+.overlay { position: fixed; inset: 0; background: rgba(245, 239, 228, 0.4); display: flex; align-items: flex-end; justify-content: center; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 5; }
+.card-modal { width: 100%; max-width: 366px; box-sizing: border-box; padding: 26px 24px 24px; border-radius: 28px; background: var(--surface); box-shadow: 0 24px 60px rgba(var(--shadow), 0.2); display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.card-modal .modal-title { font-size: 22px; line-height: 30px; font-weight: 500; }
+.card-modal .caption { font-size: 15px; line-height: 22px; margin-bottom: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .board .fog-cell, .board .mirror .mirror-bar, .board .target .core, .board .target .ring { transition: none; }
+  .board .beam { animation: none !important; }
+}
+
+/* Stone mirrors, splitters, filters, portals and dark rings */
+.board .mirror-tile.fixed { fill: #C3CCD6; filter: drop-shadow(0 2.5px 0 rgba(63, 86, 112, 0.22)); }
+.board .mirror-tile.fixed.fogged { fill: #D5DBE2; }
+.board .mirror.fixed { cursor: default; }
+.board .splitter-tile { fill: #fff; filter: drop-shadow(0 6px 10px rgba(63, 86, 112, 0.16)) drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); }
+.board .splitter-bar { fill: var(--accent); }
+.board .portal, .board .splitter { pointer-events: none; }
+.board .target.dark .ring { fill: #E8ECF0; }
+.board .target.dark .dark-mark { transition: opacity 0.3s; }
+.board .target.dark.wrong .dark-mark { opacity: 0; }

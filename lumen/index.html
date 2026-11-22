@@ -1,0 +1,97 @@
+<meta charset="utf-8">
+<title>Lumen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="lumen-base.css">
+<link rel="stylesheet" href="lumen-game.css">
+
+<section id="screen-home" class="screen home">
+  <div class="fog-blobs" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="home-title">
+    <h1>Lumen</h1>
+    <div class="micro" id="home-subtitle">Tia Sáng</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="home-actions">
+    <button type="button" id="home-play" class="primary">Play</button>
+    <div class="micro" id="home-current"></div>
+    <div class="links">
+      <a href="#chapters" id="home-chapters" class="secondary">Chapters</a>
+      <a href="#settings" id="home-settings" class="secondary">Settings</a>
+    </div>
+  </div>
+</section>
+
+<section id="screen-chapters" class="screen" hidden>
+  <header class="bar">
+    <a href="#home" class="back" data-back aria-label="Back"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div><h1 id="chapters-title">Chapters</h1></div>
+  </header>
+  <div id="chapters-list" class="chapters"></div>
+</section>
+
+<section id="screen-levels" class="screen" hidden>
+  <header class="bar">
+    <a href="#chapters" id="levels-back" class="back" data-back aria-label="Back"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div><span class="micro" id="levels-chapter"></span><h1 id="levels-title"></h1></div>
+  </header>
+  <div class="rule-row"><p class="body-muted" id="levels-rule"></p><span class="count" id="levels-count"></span></div>
+  <div id="levels-grid" class="levels"></div>
+</section>
+
+<section id="screen-game" class="screen game" hidden>
+  <button type="button" id="game-header" class="game-header">
+    <span class="micro" id="game-chapter"></span>
+    <span class="chamber" id="game-chamber"></span>
+  </button>
+  <div id="game-rule" class="rule" hidden></div>
+  <div class="spacer"></div>
+  <div class="board-wrap"><svg id="game-board" class="board" role="group" aria-label="Board"></svg></div>
+  <div class="spacer"></div>
+  <div id="game-hint-pop" class="hint-pop" hidden>
+    <div class="hint-title" id="game-hint-title"></div>
+    <div id="game-hint-body"></div>
+  </div>
+  <div id="game-footer" class="game-footer">
+    <button type="button" id="game-restart" class="icon-btn" aria-label="Restart"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg></button>
+    <div class="counter">
+      <div class="numeral" id="game-numeral">0</div>
+      <div class="micro" id="game-counter-label"></div>
+      <div class="pips" id="game-pips"></div>
+    </div>
+    <button type="button" id="game-hint" class="icon-btn" aria-label="Hint"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2.2h5c.1-1 .5-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg></button>
+  </div>
+  <div id="game-solved" class="game-solved" hidden>
+    <div class="status" id="game-solved-text"></div>
+    <button type="button" id="game-next" class="primary">Next</button>
+  </div>
+  <div id="game-out" class="overlay" hidden>
+    <div class="card-modal" role="dialog" aria-labelledby="game-out-title">
+      <div class="modal-title" id="game-out-title"></div>
+      <div class="caption" id="game-out-body"></div>
+      <button type="button" id="game-retry" class="primary"></button>
+    </div>
+  </div>
+</section>
+
+<section id="screen-settings" class="screen" hidden>
+  <header class="bar">
+    <a href="#home" class="back" data-back aria-label="Back"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div><h1 id="settings-title">Settings</h1></div>
+  </header>
+  <div id="settings-body" class="settings"></div>
+</section>
+
+<script src="lumen-engine.js"></script>
+<script src="lumen-level-generator.js"></script>
+<script src="lumen-chapters.js"></script>
+<script src="lumen-i18n.js"></script>
+<script src="lumen-storage.js"></script>
+<script src="lumen-feedback.js"></script>
+<script src="lumen-board-pieces.js"></script>
+<script src="lumen-board.js"></script>
+<script src="lumen-game.js"></script>
+<script src="lumen-menus.js"></script>
+<script src="lumen-app.js"></script>
