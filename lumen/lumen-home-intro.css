@@ -1,0 +1,47 @@
+/* Home title sequence, ported from the design's Home artboard: three beams
+   bend at mirrors, meet under the title, and a white glow reveals "Lumen".
+   One 16 s loop; every element is placed relative to the title's centre. */
+.intro { position: absolute; left: 50%; top: 30px; width: 0; height: 0; pointer-events: none; }
+.intro > * { position: absolute; }
+.intro-beam { border-radius: 3px; }
+.intro-tile { width: 40px; height: 40px; border-radius: 11px; background: #fff; box-shadow: 0 6px 16px rgba(63, 86, 112, 0.16), 0 1.5px 0 rgba(63, 86, 112, 0.16); display: flex; align-items: center; justify-content: center; }
+.intro-tile i { display: block; width: 30px; height: 5px; border-radius: 3px; background: var(--ink); }
+.intro-source { width: 34px; height: 34px; border-radius: 50%; background: #fff; box-shadow: 0 6px 16px rgba(63, 86, 112, 0.16), 0 1.5px 0 rgba(63, 86, 112, 0.16); display: flex; align-items: center; justify-content: center; }
+.intro-source i { display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px 2px var(--glow); }
+.intro-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px 2px var(--glow); }
+.intro-reveal { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle, var(--bg) 0%, var(--bg) 62%, transparent 100%); }
+.intro-glow { width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle, #fff 0%, #fff 55%, transparent 100%); box-shadow: 0 0 5px 1px rgba(91, 97, 112, 0.3), 0 0 14px 4px rgba(91, 97, 112, 0.12); }
+.home-title h1 { -webkit-mask-image: radial-gradient(circle closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(circle closest-side, #000 68%, transparent 100%); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 50% 50%; mask-position: 50% 50%; -webkit-mask-size: 360px 360px; mask-size: 360px 360px; animation: intro-word 16s ease-in-out infinite; }
+.home-title .micro { animation: intro-sub 16s ease-in-out infinite; }
+.fog-blobs { animation: intro-fog 16s ease-in-out infinite; }
+
+/* Beams grow from their start, hold, then fade with everything else. */
+@keyframes grow-r1 { 0%, 5% { transform: scaleX(0); opacity: 1; animation-timing-function: ease-in; } 8.75%, 46.25% { transform: scaleX(1); opacity: 1; animation-timing-function: ease-in-out; } 52.5% { transform: scaleX(1); opacity: 0; } 52.62%, 100% { transform: scaleX(0); opacity: 0; } }
+@keyframes grow-r2 { 0%, 8.75% { transform: scaleY(0); opacity: 1; animation-timing-function: cubic-bezier(.25, .4, .55, 1); } 11.88%, 46.25% { transform: scaleY(1); opacity: 1; animation-timing-function: ease-in-out; } 52.5% { transform: scaleY(1); opacity: 0; } 52.62%, 100% { transform: scaleY(0); opacity: 0; } }
+@keyframes grow-b1 { 0%, 16.25% { transform: scaleY(0); opacity: 1; animation-timing-function: ease-in; } 20%, 46.25% { transform: scaleY(1); opacity: 1; animation-timing-function: ease-in-out; } 52.5% { transform: scaleY(1); opacity: 0; } 52.62%, 100% { transform: scaleY(0); opacity: 0; } }
+@keyframes grow-b2 { 0%, 20% { transform: scaleX(0); opacity: 1; animation-timing-function: cubic-bezier(.25, .4, .55, 1); } 23.75%, 46.25% { transform: scaleX(1); opacity: 1; animation-timing-function: ease-in-out; } 52.5% { transform: scaleX(1); opacity: 0; } 52.62%, 100% { transform: scaleX(0); opacity: 0; } }
+@keyframes grow-g1 { 0%, 28.12% { transform: scaleX(0); opacity: 1; animation-timing-function: ease-in; } 31.87%, 46.25% { transform: scaleX(1); opacity: 1; animation-timing-function: ease-in-out; } 52.5% { transform: scaleX(1); opacity: 0; } 52.62%, 100% { transform: scaleX(0); opacity: 0; } }
+@keyframes grow-g2 { 0%, 31.87% { transform: scaleY(0); opacity: 1; animation-timing-function: cubic-bezier(.25, .4, .55, 1); } 35%, 46.25% { transform: scaleY(1); opacity: 1; animation-timing-function: ease-in-out; } 52.5% { transform: scaleY(1); opacity: 0; } 52.62%, 100% { transform: scaleY(0); opacity: 0; } }
+/* Pieces fade in just before their beam, dots when a beam lands. */
+@keyframes show-r { 0%, 1.88% { opacity: 0; } 4.38%, 46.25% { opacity: 1; animation-timing-function: ease-in-out; } 52.5%, 100% { opacity: 0; } }
+@keyframes show-b { 0%, 13.12% { opacity: 0; } 15.62%, 46.25% { opacity: 1; animation-timing-function: ease-in-out; } 52.5%, 100% { opacity: 0; } }
+@keyframes show-g { 0%, 25% { opacity: 0; } 27.5%, 46.25% { opacity: 1; animation-timing-function: ease-in-out; } 52.5%, 100% { opacity: 0; } }
+@keyframes dot-r { 0%, 11.25% { opacity: 0; } 13.12%, 46.25% { opacity: 1; animation-timing-function: ease-in-out; } 52.5%, 100% { opacity: 0; } }
+@keyframes dot-b { 0%, 23.12% { opacity: 0; } 25%, 46.25% { opacity: 1; animation-timing-function: ease-in-out; } 52.5%, 100% { opacity: 0; } }
+@keyframes dot-g { 0%, 34.38% { opacity: 0; } 36.25%, 46.25% { opacity: 1; animation-timing-function: ease-in-out; } 52.5%, 100% { opacity: 0; } }
+/* Mirrors turn into place as their beam arrives. */
+@keyframes turn-r { 0%, 5.94% { transform: rotate(135deg); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 8.75%, 100% { transform: rotate(45deg); } }
+@keyframes turn-b { 0%, 17.19% { transform: rotate(-135deg); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 20%, 100% { transform: rotate(-45deg); } }
+@keyframes turn-g { 0%, 29.06% { transform: rotate(135deg); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 31.87%, 100% { transform: rotate(45deg); } }
+/* The white bloom, the title reveal through a widening mask, and the fog dimming behind it. */
+@keyframes intro-glow { 0%, 38.12% { opacity: 0; transform: scale(1); } 40% { opacity: 1; transform: scale(1); animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 52.5%, 100% { opacity: 0; transform: scale(9.4); } }
+@keyframes intro-reveal { 0%, 38.12% { transform: scale(1); opacity: 0; } 40% { transform: scale(1); opacity: 1; animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 52.5% { transform: scale(9.4); opacity: 1; } 57.5% { transform: scale(9.4); opacity: 0; } 57.63%, 100% { transform: scale(1); opacity: 0; } }
+@keyframes intro-word { 0%, 40% { opacity: 0; -webkit-mask-size: 28px 28px; mask-size: 28px 28px; animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 45.63% { opacity: 1; } 52.5%, 83.75% { opacity: 1; -webkit-mask-size: 360px 360px; mask-size: 360px 360px; } 91.25%, 100% { opacity: 0; -webkit-mask-size: 360px 360px; mask-size: 360px 360px; } }
+@keyframes intro-sub { 0%, 48.12% { opacity: 0; } 54.37%, 83.75% { opacity: 1; } 91.25%, 100% { opacity: 0; } }
+@keyframes intro-fog { 0%, 40.62% { opacity: 1; } 50.62%, 83.75% { opacity: 0.3; } 97.5%, 100% { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+  .home-title h1 { -webkit-mask-image: none; mask-image: none; animation: none; }
+  .home-title .micro, .fog-blobs { animation: none; }
+}

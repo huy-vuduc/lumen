@@ -19,6 +19,7 @@ const LumenMenus = (() => {
     document.getElementById('home-chapters').textContent = t('chapters');
     document.getElementById('home-settings').textContent = t('settings');
     document.getElementById('home-subtitle').textContent = t('subtitle');
+    LumenHomeIntro.mount(document.querySelector('#screen-home .home-title'));
   }
 
   function renderChapters() {

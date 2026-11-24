@@ -78,6 +78,14 @@ cubic-bezier(0.4, 0, 0.2, 1). Target lighting 500 ms fade. Respect prefers-reduc
 The design's dash patterns were dropped on 2026-11-20 at the owner's request: dashed target
 rings read as portals. Beams and rings are always solid; there is no setting.
 
+## Home title sequence
+
+Ported on 2026-11-24 from the Home artboard (`lumen-home-intro.css` / `.js`): a 16 s loop where red,
+blue and green sources light in turn, each beam bends at a mirror that turns into place, the three
+meet under the title, a white bloom reveals "Lumen" through a widening mask, the subtitle follows
+and the fog dims to 30% behind the title. Pieces are placed relative to the title centre so the
+scene holds on any phone height. Hidden under prefers-reduced-motion.
+
 ## Vietnamese strings seen in the design
 
 Chương 3 · Hoà Sắc, Phòng 7, Lượt xoay còn lại, Đỏ + Xanh dương = Hồng tím.
