@@ -6,17 +6,18 @@ const LumenHomeIntro = (() => {
   const LOOP = '16s ease-in-out infinite';
 
   // [kind, colour, left, top, extra]; extra holds width/height/origin for beams.
+  // A beam ends exactly at the mirror's centre so the joint stays under the bar.
   // Listed back to front, as on the board: tiles and sources, then beams
   // running over the tiles up to the bars, then the bars and dots on top.
   const PIECES = [
     ['tile', 'r', -20, -120], ['tile', 'b', 130, -20], ['tile', 'g', -85, 105],
     ['source', 'r', -167, -117], ['source', 'b', 133, -167], ['source', 'g', 78, 108],
-    ['beam', 'r', -153, -103, { w: 156, h: 6, origin: '3px 3px', anim: 'grow-r1' }],
-    ['beam', 'r', -3, -103, { w: 6, h: 106, origin: '3px 3px', anim: 'grow-r2' }],
-    ['beam', 'b', 147, -153, { w: 6, h: 156, origin: '3px 3px', anim: 'grow-b1' }],
-    ['beam', 'b', 62, -3, { w: 91, h: 6, origin: '88px 3px', anim: 'grow-b2' }],
-    ['beam', 'g', -68, 122, { w: 166, h: 6, origin: '163px 3px', anim: 'grow-g1' }],
-    ['beam', 'g', -68, -3, { w: 6, h: 131, origin: '3px 128px', anim: 'grow-g2' }],
+    ['beam', 'r', -153, -103, { w: 153, h: 6, origin: '3px 3px', anim: 'grow-r1' }],
+    ['beam', 'r', -3, -100, { w: 6, h: 103, origin: '3px 3px', anim: 'grow-r2' }],
+    ['beam', 'b', 147, -153, { w: 6, h: 153, origin: '3px 3px', anim: 'grow-b1' }],
+    ['beam', 'b', 62, -3, { w: 88, h: 6, origin: '88px 3px', anim: 'grow-b2' }],
+    ['beam', 'g', -65, 122, { w: 160, h: 6, origin: '160px 3px', anim: 'grow-g1' }],
+    ['beam', 'g', -68, -3, { w: 6, h: 128, origin: '3px 125px', anim: 'grow-g2' }],
     ['bar', 'r', -20, -120], ['bar', 'b', 130, -20], ['bar', 'g', -85, 105],
     ['dot', 'r', -6, -6], ['dot', 'b', 59, -6], ['dot', 'g', -71, -6],
     ['reveal', '', -15, -15], ['glow', '', -12, -12],
@@ -29,7 +30,7 @@ const LumenHomeIntro = (() => {
     node.style.top = `${top}px`;
     if (c) { node.style.setProperty('--c', BEAM[c]); node.style.setProperty('--glow', GLOW[c]); }
     if (kind === 'beam') {
-      Object.assign(node.style, { width: `${x.w}px`, height: `${x.h}px`, background: BEAM[c], boxShadow: `0 0 10px 1.5px ${GLOW[c]}`, transformOrigin: x.origin, animation: `${x.anim} ${LOOP}` });
+      Object.assign(node.style, { width: `${x.w}px`, height: `${x.h}px`, background: BEAM[c], filter: `drop-shadow(0 0 5px ${GLOW[c]})`, transformOrigin: x.origin, animation: `${x.anim} ${LOOP}` });
     } else if (kind === 'tile') {
       node.style.animation = `show-${c} ${LOOP}`;
     } else if (kind === 'bar') {
