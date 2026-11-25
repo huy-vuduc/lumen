@@ -103,7 +103,13 @@ Added 2026-11-18 for chapters 4 to 12. Chapter tints 7 to 12: #F3F7F2, #F6F3EE, 
 
 ## Chapters and difficulty
 
-12 chapters of 10 chambers. Minimum rotations climb from 1 (chapter 1) to 6 (chapters 11 and 12).
-Spare rotations drop to zero on the last chambers of every chapter from chapter 2 onward, and
-chapter 12 has no spare at all. Mechanics arrive one per chapter: walls (2), mixing (3), stone
-mirrors (4), splitter (5), dark rings (6), filters (7), portals (8); 9 to 12 combine them.
+12 chapters of 10 chambers, generated once by `scripts/build-lumen-levels.js` into
+`lumen/lumen-levels-data.js` (the game never runs the generator or the solver). Chapter 1
+teaches with 1 to 3 rotations. From chapter 2 every chamber is a real puzzle: minimum
+rotations climb 3 to 5 (chapter 2), 4 to 7 (3 and 4), 4 to 8 (5 to 8), 6 to 9 (9 and 10),
+8 to 10 (11) and 9 to 10 (12), among 5 to 21 rotatable mirrors. Boards grow from 7 x 7
+(chapter 2) to 8 x 8 (3 to 7) and 9 x 9 (8 to 12); every beam turns up to four times. The
+spare rotation disappears from chamber 7 (chapters 2 to 5), chamber 5 (6 to 8), chamber 3
+(9 to 11), and chapter 12 never has one. Mechanics arrive one per chapter: walls (2),
+mixing (3), stone mirrors (4), splitter (5), dark rings (6), filters (7), portals (8);
+9 to 12 combine them.

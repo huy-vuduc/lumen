@@ -49,8 +49,9 @@ const LumenLevelGenerator = (() => {
 
   // Walk outward from `from` along `dir`, turning `turns` times. Marks cells
   // used, records straight cells (filter spots) and stray lines (dark ring
-  // spots). Returns the end cell and the last walk direction, or null.
-  function walk(ctx, from, dir, turns) {
+  // spots). The last leg leaves `keep` free cells ahead of the end cell.
+  // Returns the end cell and the last walk direction, or null.
+  function walk(ctx, from, dir, turns, keep = 0) {
     const { r, level } = ctx;
     let x = from.x, y = from.y;
     for (let leg = 0; leg <= turns; leg++) {
@@ -72,11 +73,17 @@ const LumenLevelGenerator = (() => {
         x = b[0]; y = b[1];
         free = runway(ctx, x, y, dir);
       }
-      const len = leg === turns ? randInt(r, Math.min(2, free), free) : randInt(r, 1, free);
+      const last = leg === turns;
+      const max = last ? free - keep : free;
+      if (max < 1) return null;
+      const len = last ? randInt(r, Math.min(2, max), max) : randInt(r, 1, max);
       for (let i = 1; i <= len; i++) { ctx.used.add(k(x + dx * i, y + dy * i)); if (i < len) ctx.straight.push([x + dx * i, y + dy * i]); }
       x += dx * len; y += dy * len;
-      if (leg === turns) break;
-      const next = pick(r, DIR_NAMES.filter((d) => d !== dir && d !== OPPOSITE[dir]));
+      if (last) break;
+      // Turn only toward a side that still has room for the next leg.
+      const sides = DIR_NAMES.filter((d) => d !== dir && d !== OPPOSITE[dir] && runway(ctx, x, y, d) >= 1);
+      if (!sides.length) return null;
+      const next = pick(r, sides);
       // The beam travels toward the target, so it arrives moving OPPOSITE[next].
       level.mirrors.push({ x, y, type: mirrorFor(OPPOSITE[next], OPPOSITE[dir]), fixed: false, path: true });
       ctx.strays.push({ x, y, dir: OPPOSITE[next] });
@@ -127,11 +134,11 @@ const LumenLevelGenerator = (() => {
     ctx.level.targets.push(a);
     ctx.straight = [];
     const dir = startDir(ctx, a);
-    const s = dir && walk(ctx, a, dir, randInt(ctx.r, 0, 1));
+    const s = dir && walk(ctx, a, dir, randInt(ctx.r, 0, 1), 1);
     if (!s) return false;
     const w1 = s.dir;
     const side = DIR_NAMES.filter((d) => d !== w1 && d !== OPPOSITE[w1] && runway(ctx, s.x, s.y, d) >= 1);
-    if (!side.length || runway(ctx, s.x, s.y, w1) < 1) return false;
+    if (!side.length) return false;
     const u = pick(ctx.r, side);
     const b = walk(ctx, s, u, randInt(ctx.r, 0, 1));
     if (!b) return false;
@@ -205,7 +212,8 @@ const LumenLevelGenerator = (() => {
   const DEFAULTS = { walls: 0, decoys: 0, fixedDecoys: 0, fixed: 0, filters: 0, portals: 0, dark: 0, scramble: 1, minMoves: 1, extraMoves: 1 };
 
   // Generate a verified level. If the seed is unlucky for a tight spec, relax
-  // it step by step so every chamber always exists.
+  // it step by step so every chamber always exists; `relaxed` records how many
+  // steps were needed (0 = the spec as written).
   function generate(rawSpec, seed) {
     const spec = { ...DEFAULTS, ...rawSpec };
     const r = rng(seed);
@@ -217,9 +225,9 @@ const LumenLevelGenerator = (() => {
       { ...easier(easier(spec)), turns: Math.max(1, spec.turns - 1), fixed: 0, portals: 0, filters: 0, dark: 0 },
       { ...spec, turns: 1, minMoves: 1, scramble: 1, portals: 0, dark: 0, fixed: 0, filters: 0, targets: spec.targets.map((t) => (t.split ? { colors: [t.split] } : t)) },
     ];
-    for (const s of relaxations) {
-      const level = tryGenerate(s, r, 400);
-      if (level) return level;
+    for (let i = 0; i < relaxations.length; i++) {
+      const level = tryGenerate(relaxations[i], r, 400);
+      if (level) { level.relaxed = i; return level; }
     }
     throw new Error(`Could not generate a level for seed ${seed}`);
   }

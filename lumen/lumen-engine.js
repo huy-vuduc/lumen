@@ -103,26 +103,25 @@ const LumenEngine = (() => {
     return type === 'slash' ? 'back' : 'slash';
   }
 
-  function popcount(n) {
-    let c = 0;
-    while (n) { c += n & 1; n >>= 1; }
-    return c;
-  }
-
-  // Brute-force every orientation of the mirrors that can turn. Returns the
-  // fewest toggles from the starting orientation that solve the level, or -1.
+  // Fewest toggles from the starting orientation that solve the level, or -1.
+  // Tries every set of k mirrors for k = 0, 1, 2... so the search stops as
+  // soon as the smallest solution is found.
   function minimumMoves(level) {
     const rotatable = level.mirrors.map((m, i) => (m.fixed ? -1 : i)).filter((i) => i >= 0);
-    const base = level.mirrors.map((m) => m.type);
-    let best = -1;
-    for (let mask = 0; mask < (1 << rotatable.length); mask++) {
-      const types = base.slice();
-      rotatable.forEach((idx, bit) => { if ((mask >> bit) & 1) types[idx] = toggle(types[idx]); });
-      if (!trace(level, types).solved) continue;
-      const moves = popcount(mask);
-      if (best < 0 || moves < best) best = moves;
+    const types = level.mirrors.map((m) => m.type);
+    const flip = (i) => { types[i] = toggle(types[i]); };
+    // Flip `left` more mirrors chosen from rotatable[from..]; true once solved.
+    function search(from, left) {
+      if (left === 0) return trace(level, types).solved;
+      for (let i = from; i <= rotatable.length - left; i++) {
+        flip(rotatable[i]);
+        if (search(i + 1, left - 1)) return true;
+        flip(rotatable[i]);
+      }
+      return false;
     }
-    return best;
+    for (let k = 0; k <= rotatable.length; k++) if (search(0, k)) return k;
+    return -1;
   }
 
   return { DIRS, reflect, trace, toggle, minimumMoves };
