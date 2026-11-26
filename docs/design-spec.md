@@ -128,7 +128,9 @@ The game is free with rewarded ads only: no interstitials, so the calm pace stay
   "Watch an ad for a hint". Solutions come from `lumen-solutions-data.js`, built by
   `scripts/build-lumen-solutions.js` from the level data (so old chambers stay untouched).
 - Ads: `lumen-rewards.js` asks `window.LumenAdProvider.showRewarded(kind)` when the
-  native app installs one; otherwise a stand-in card counts down 3 seconds (Cancel gives
+  native app installs one (`app/native-ads.js`: Google UMP consent, iOS tracking prompt,
+  then AdMob with one rewarded ad preloaded; the reward counts only when the plugin
+  resolves, closing the ad early gives nothing); otherwise a stand-in card counts down 3 seconds (Cancel gives
   nothing). Counters live in the saved state under `economy`; the playtest "unlimited"
   switch lifts both limits and hides the retry count.
 - Header shows "n retries" under the chamber name; the out card has a Back link so a
@@ -141,3 +143,13 @@ spare rotation disappears from chamber 7 (chapters 2 to 5), chamber 5 (6 to 8), 
 (9 to 11), and chapter 12 never has one. Mechanics arrive one per chapter: walls (2),
 mixing (3), stone mirrors (4), splitter (5), dark rings (6), filters (7), portals (8);
 9 to 12 combine them.
+
+## Native shell (2026-11-26)
+
+Capacitor 8 at the repo root wraps `lumen/` for iOS and Android (`npm run sync`). The
+web build stays bundler-free; only `app/native-ads.js` is bundled, by esbuild, into
+`www/lumen-native-ads.js`. Be Vietnam Pro is served from `lumen/fonts/` (latin and
+Vietnamese subsets, 300 to 600) so the app and the site work offline. The app icon is a
+mirror tile bending a red beam upward on the page tone (`app/icon/logo.svg`). AdMob IDs
+are Google's test IDs until the account is approved. `navigator.vibrate` is a no-op in
+WKWebView, so iOS has sound feedback only.

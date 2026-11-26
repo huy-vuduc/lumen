@@ -30,7 +30,7 @@ jobs:
       - name: Build static site
         run: |
           mkdir dist
-          cp lumen/* dist/
+          cp -R lumen/. dist/
           { echo '<!doctype html>'; echo '<html lang="en">'; echo '<script>window.LUMEN_PLAYTEST = true</script>'; cat lumen/index.html; echo '</html>'; } > dist/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

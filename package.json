@@ -1,0 +1,24 @@
+{
+  "name": "lumen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lumen (Tia Sáng): a calm mirror-rotation light puzzle, packaged for iOS and Android with Capacitor",
+  "scripts": {
+    "build": "node scripts/build-app-www.js",
+    "sync": "npm run build && cap sync",
+    "ios": "npm run sync && cap open ios",
+    "android": "npm run sync && cap open android",
+    "levels": "node scripts/build-lumen-levels.js"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^8.4.2",
+    "@capacitor/android": "^8.6.3",
+    "@capacitor/cli": "^8.6.3",
+    "@capacitor/core": "^8.6.3",
+    "@capacitor/ios": "^8.6.3"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "esbuild": "^0.28.2"
+  }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Lumen icon: a mirror tile bending a red beam upward, on the game's page tone. -->
+  <rect width="1024" height="1024" fill="#F5EFE4"/>
+  <circle cx="512" cy="512" r="330" fill="#FFFFFF" opacity="0.55"/>
+  <rect x="252" y="252" width="520" height="520" rx="140" fill="#FFFFFF"/>
+  <rect x="252" y="252" width="520" height="520" rx="140" fill="none" stroke="#3F5670" stroke-opacity="0.12" stroke-width="6"/>
+  <!-- beam in from the left, reflected up at the "/" bar -->
+  <path d="M60 512 H512 V60" fill="none" stroke="#D0203F" stroke-opacity="0.28" stroke-width="96" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M60 512 H512 V60" fill="none" stroke="#D0203F" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="332" y="482" width="360" height="60" rx="30" fill="#2B3542" transform="rotate(-45 512 512)"/>
+</svg>

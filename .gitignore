@@ -3,3 +3,6 @@
 # Earlier prototypes, superseded by lumen/
 light-flow/
 cut-wires/
+
+node_modules/
+www/
