@@ -11,7 +11,13 @@
 
 .board .fog { filter: blur(7px); pointer-events: none; }
 .board .fog-cell { transition: opacity 0.9s ease-out; }
-.board .wall { fill: #C3CCD6; filter: drop-shadow(0 2.5px 0 rgba(63, 86, 112, 0.22)); }
+.board .wall { filter: drop-shadow(0 2.5px 0 rgba(36, 46, 60, 0.35)); }
+.board .wall rect { fill: #6E7786; }
+.board .wall .facet { fill: rgba(255, 255, 255, 0.11); }
+.board .wall .crack { fill: none; stroke: rgba(22, 30, 42, 0.3); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.board .wall .foot { fill: rgba(22, 30, 42, 0.24); }
+.board .beam-impact { opacity: 0.7; filter: blur(1.2px); transform-box: fill-box; transform-origin: center; }
+@keyframes impact { from { opacity: 0; transform: scale(0.3); } to { opacity: 0.7; transform: scale(1); } }
 .board .mirror { cursor: pointer; outline: none; }
 .board .mirror-tile { fill: #fff; filter: drop-shadow(0 6px 10px rgba(63, 86, 112, 0.16)) drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); transition: fill 0.9s; }
 .board .mirror .mirror-bar { fill: var(--ink); transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), fill 0.9s; }
@@ -54,13 +60,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .board .fog-cell, .board .mirror .mirror-bar, .board .target .core, .board .target .ring { transition: none; }
-  .board .beam, .game-solved { animation: none !important; }
+  .board .beam, .board .beam-impact, .game-solved { animation: none !important; }
 }
 
 /* Stone mirrors, splitters, filters, portals and dark rings */
-.board .mirror-tile.fixed { fill: #C3CCD6; filter: drop-shadow(0 2.5px 0 rgba(63, 86, 112, 0.22)); }
-.board .mirror-tile.fixed.fogged { fill: #D5DBE2; }
+.board .mirror-tile.fixed { fill: #E6EAF0; stroke: #AEB8C6; stroke-width: 1.5; filter: drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); }
+.board .mirror-tile.fixed.fogged { fill: #EEF1F5; }
 .board .mirror.fixed { cursor: default; }
+.board .mirror.fixed .mirror-bar { fill: #7C8696; }
 .board .splitter-tile { fill: #fff; filter: drop-shadow(0 6px 10px rgba(63, 86, 112, 0.16)) drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); }
 .board .splitter-bar { fill: var(--accent); }
 .board .portal, .board .splitter { pointer-events: none; }

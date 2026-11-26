@@ -19,8 +19,19 @@ const LumenPieces = (() => {
     return node;
   }
 
-  function wall(base, [x, y]) {
-    el('rect', { x: centre(x) - 22, y: centre(y) - 22, width: 44, height: 44, rx: 10, class: 'wall' }, base);
+  // Stone block: fills its whole cell and bridges to any stone neighbour so a
+  // run of blocks reads as one wall. A pale facet, a crack and a dark foot
+  // make it rock rather than a tile; the facet flips on alternate cells.
+  function wall(base, [x, y], walls = new Set()) {
+    const cx = centre(x), cy = centre(y), h = CELL / 2, f = (x + y) % 2 ? -1 : 1;
+    const g = el('g', { class: 'wall' }, base);
+    el('rect', { x: cx - h, y: cy - h, width: CELL, height: CELL, rx: 5 }, g);
+    if (walls.has(`${x + 1},${y}`)) el('rect', { x: cx + h - 6, y: cy - h, width: 12, height: CELL }, g);
+    if (walls.has(`${x},${y + 1}`)) el('rect', { x: cx - h, y: cy + h - 6, width: CELL, height: 12 }, g);
+    const px = (d) => cx + f * d;
+    el('polygon', { points: `${px(-h + 5)},${cy - h + 5} ${px(h - 15)},${cy - h + 5} ${px(-h + 5)},${cy + h - 17}`, class: 'facet' }, g);
+    el('polyline', { points: `${px(h - 6)},${cy - h + 9} ${px(h - 14)},${cy - 2} ${px(h - 9)},${cy + 6} ${px(h - 20)},${cy + h - 10}`, class: 'crack' }, g);
+    el('rect', { x: cx - h + 6, y: cy + h - 9, width: CELL - 12, height: 4, rx: 2, class: 'foot' }, g);
   }
 
   // Tap-to-turn mirror, or a stone mirror that never turns (no hit area).

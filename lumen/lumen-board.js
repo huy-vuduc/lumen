@@ -25,7 +25,8 @@ const LumenBoard = (() => {
         fogCells.push(el('rect', { x: PAD + x * CELL - 1, y: PAD + y * CELL - 1, width: CELL + 2, height: CELL + 2, fill: fogColor, class: 'fog-cell' }, gFog));
       }
     }
-    level.walls.forEach((w) => P.wall(gBase, w));
+    const wallKeys = new Set(level.walls.map(([x, y]) => `${x},${y}`));
+    level.walls.forEach((w) => P.wall(gBase, w, wallKeys));
     (level.filters || []).forEach((f) => P.filter(gBase, f));
     (level.splitters || []).forEach((s) => P.splitter(gBase, gTop, s));
     (level.portals || []).forEach((pair, i) => pair.forEach((p) => P.portal(gTop, p, i)));
@@ -89,6 +90,11 @@ const LumenBoard = (() => {
         line.style.filter = `drop-shadow(0 0 5px ${rgba(s.color === 7 ? DARK_RING : BEAM[s.color], 0.42)})`;
         lines.push(line);
         if (isNew) lines.forEach((l) => { l.style.animation = `beam-draw ${cells * MS_PER_CELL}ms linear ${start}ms both`; });
+        // A beam that ends on a stone face leaves a smudge of its colour there.
+        if (wallKeys.has(`${s.x2 + ux / 2},${s.y2 + uy / 2}`)) {
+          const spot = el('ellipse', { cx: centre(s.x2) + ux * 2, cy: centre(s.y2) + uy * 2, rx: ux ? 3 : 9, ry: ux ? 9 : 3, fill: BEAM[s.color], class: 'beam-impact' }, gBeams);
+          if (isNew) spot.style.animation = `impact 240ms ease-out ${end}ms both`;
+        }
       }
       previousSegments = seen;
       return { arrival, cellArrival };

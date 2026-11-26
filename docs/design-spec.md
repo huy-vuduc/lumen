@@ -63,7 +63,8 @@ Red is darker than green on purpose (luminance 0.15 vs 0.25).
 - Target empty: ring 0.68, stroke 0.08, dusty tone of the needed colour (magenta #9A5698).
   Lit correct: ring and core in the full colour, white fill, halo 0 0 18 4 at 38%, fades in 500 ms.
   Lit wrong: ring stays dusty, small core 0.2 shows the arriving colour.
-- Wall: tile 0.88, radius 0.2, fill #C3CCD6, edge shadow 0 2.5 0 at 22%.
+- Wall (2026-11-26): stone block filling the whole cell, radius 0.1, fill #6E7786, foot shadow 0 2.5 0 at 35%; a pale facet (white 11%), a crack and a dark foot band make it rock, and neighbouring blocks bridge into one wall. A beam ending on stone leaves a blurred smudge of its colour on the face (0.7 opacity, scaled in over 240 ms on arrival).
+  Was a 0.88 tile in #C3CCD6, which read like a stone mirror or fog.
 - Beam: core 0.12, round caps, glow 0 0 10 1.5 at 42%. Mitred at the mirror bar.
 - Fog: 96% on cells 2+ steps from any beam, 55% beside a beam, 0 on the path (was 86 / 38). Layer blurred 7 px.
   Each cell clears when the beam head reaches it (or its lit neighbour); fog thickens again at once.
@@ -82,7 +83,7 @@ rings read as portals. Beams and rings are always solid; there is no setting.
 
 Ported on 2026-11-24 from the Home artboard (`lumen-home-intro.css` / `.js`): a 16 s loop where red,
 blue and green sources light in turn, each beam bends at a mirror that turns into place, the three
-meet under the title, a white bloom reveals "Lumen" through a widening mask, the subtitle follows
+meet under the title, a white bloom reveals "Lumen" through a mask that grows with the bloom itself (both 30 to 420 px, the word kept inside the bloom, 2026-11-26), the subtitle follows
 and the fog dims to 30% behind the title. Pieces are placed relative to the title centre so the
 scene holds on any phone height. Hidden under prefers-reduced-motion.
 
@@ -94,7 +95,7 @@ Chương 3 · Hoà Sắc, Phòng 7, Lượt xoay còn lại, Đỏ + Xanh dươn
 
 Added 2026-11-18 for chapters 4 to 12. Chapter tints 7 to 12: #F3F7F2, #F6F3EE, #EFF5F7, #F8F2F0, #F2F2F8, #FBF6EA.
 
-- Stone mirror: same tile as a mirror but filled #C3CCD6 with the wall's edge shadow; bar in ink; never turns, no tap area.
+- Stone mirror (2026-11-26): mirror tile filled #E6EAF0 with a 1.5 px #AEB8C6 outline and a grey #7C8696 bar; never turns, no tap area. Was the wall's grey, which made it look like a wall.
 - Splitter: white tile with two thin accent bars (0.6 x 0.05 cell, 0.13 apart) along the mirror line. Beam passes straight and also reflects.
 - Filter: 0.72 cell square, radius 0.2, beam colour at 22% fill with a 2 px stroke; a beam keeps only that colour (white source becomes it).
 - Portal: dashed ring 0.56 cell, stroke 3, with a 4 unit dot; pairs share a colour (accent #44648A, then #9A5698). Beam leaves the other door in the same direction.

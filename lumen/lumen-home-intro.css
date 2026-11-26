@@ -12,7 +12,7 @@
 .intro-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px 2px var(--glow); }
 .intro-reveal { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle, var(--bg) 0%, var(--bg) 62%, transparent 100%); }
 .intro-glow { width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle, #fff 0%, #fff 55%, transparent 100%); box-shadow: 0 0 5px 1px rgba(91, 97, 112, 0.3), 0 0 14px 4px rgba(91, 97, 112, 0.12); }
-.home-title h1 { -webkit-mask-image: radial-gradient(circle closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(circle closest-side, #000 68%, transparent 100%); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 50% 50%; mask-position: 50% 50%; -webkit-mask-size: 360px 360px; mask-size: 360px 360px; animation: intro-word 16s ease-in-out infinite; }
+.home-title h1 { -webkit-mask-image: radial-gradient(circle closest-side, #000 55%, transparent 85%); mask-image: radial-gradient(circle closest-side, #000 55%, transparent 85%); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 50% 50%; mask-position: 50% 50%; -webkit-mask-size: 420px 420px; mask-size: 420px 420px; animation: intro-word 16s ease-in-out infinite; }
 .home-title .micro { animation: intro-sub 16s ease-in-out infinite; }
 .fog-blobs { animation: intro-fog 16s ease-in-out infinite; }
 
@@ -34,10 +34,11 @@
 @keyframes turn-r { 0%, 5.94% { transform: rotate(135deg); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 8.75%, 100% { transform: rotate(45deg); } }
 @keyframes turn-b { 0%, 17.19% { transform: rotate(-135deg); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 20%, 100% { transform: rotate(-45deg); } }
 @keyframes turn-g { 0%, 29.06% { transform: rotate(135deg); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 31.87%, 100% { transform: rotate(45deg); } }
-/* The white bloom, the title reveal through a widening mask, and the fog dimming behind it. */
-@keyframes intro-glow { 0%, 38.12% { opacity: 0; transform: scale(1); } 40% { opacity: 1; transform: scale(1); animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 52.5%, 100% { opacity: 0; transform: scale(9.4); } }
-@keyframes intro-reveal { 0%, 38.12% { transform: scale(1); opacity: 0; } 40% { transform: scale(1); opacity: 1; animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 52.5% { transform: scale(9.4); opacity: 1; } 57.5% { transform: scale(9.4); opacity: 0; } 57.63%, 100% { transform: scale(1); opacity: 0; } }
-@keyframes intro-word { 0%, 40% { opacity: 0; -webkit-mask-size: 28px 28px; mask-size: 28px 28px; animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 45.63% { opacity: 1; } 52.5%, 83.75% { opacity: 1; -webkit-mask-size: 360px 360px; mask-size: 360px 360px; } 91.25%, 100% { opacity: 0; -webkit-mask-size: 360px 360px; mask-size: 360px 360px; } }
+/* The white bloom and the title reveal share one 30 -> 420 px circle, so the
+   word appears only as far as the bloom has opened. Then the fog dims. */
+@keyframes intro-glow { 0%, 38.12% { opacity: 0; transform: scale(1); } 40% { opacity: 1; transform: scale(1); animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 52.5%, 100% { opacity: 0; transform: scale(14); } }
+@keyframes intro-reveal { 0%, 38.12% { transform: scale(1); opacity: 0; } 40% { transform: scale(1); opacity: 1; animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 52.5% { transform: scale(14); opacity: 1; } 57.5% { transform: scale(14); opacity: 0; } 57.63%, 100% { transform: scale(1); opacity: 0; } }
+@keyframes intro-word { 0%, 40% { opacity: 0; -webkit-mask-size: 30px 30px; mask-size: 30px 30px; animation-timing-function: cubic-bezier(.35, 0, .25, 1); } 41.5% { opacity: 1; } 52.5%, 83.75% { opacity: 1; -webkit-mask-size: 420px 420px; mask-size: 420px 420px; } 91.25%, 100% { opacity: 0; -webkit-mask-size: 420px 420px; mask-size: 420px 420px; } }
 @keyframes intro-sub { 0%, 48.12% { opacity: 0; } 54.37%, 83.75% { opacity: 1; } 91.25%, 100% { opacity: 0; } }
 @keyframes intro-fog { 0%, 40.62% { opacity: 1; } 50.62%, 83.75% { opacity: 0.3; } 97.5%, 100% { opacity: 1; } }
 
