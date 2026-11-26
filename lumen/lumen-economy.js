@@ -3,9 +3,11 @@
 // a turn); one retry returns every REFILL_MS up to the maximum, and a
 // rewarded ad adds one. Each chapter allows HINTS_PER_CHAPTER mirror reveals,
 // and a rewarded ad adds one. The playtest "unlimited" switch lifts both.
+// A run that ends with no retry left leaves the chamber owing one: it cannot
+// be opened again until a refill or an ad pays the debt.
 // Counters live in LumenStorage.economy(): retries[chapter-chamber] =
-// { left, at } where `at` is when the refill clock started; hints[chapter] =
-// { used, extra }.
+// { left, at, owed } where `at` is when the refill clock started;
+// hints[chapter] = { used, extra }.
 const LumenEconomy = (() => {
   const MAX_RETRIES = 2;
   const REFILL_MS = 30 * 60 * 1000;
@@ -22,12 +24,14 @@ const LumenEconomy = (() => {
       entry.left++;
       entry.at += REFILL_MS;
     }
+    if (entry.owed && entry.left > 0) { entry.left--; entry.owed = false; }
     if (entry.left >= MAX_RETRIES) entry.at = now;
     all[id(chapter, chamber)] = entry;
     return entry;
   }
 
   const retriesLeft = (chapter, chamber) => (unlimited() ? Infinity : retriesEntry(chapter, chamber).left);
+  const owes = (chapter, chamber) => !unlimited() && Boolean(retriesEntry(chapter, chamber).owed);
 
   // Milliseconds until the next retry returns, 0 when none is missing.
   function refillIn(chapter, chamber) {
@@ -35,18 +39,21 @@ const LumenEconomy = (() => {
     return entry.left >= MAX_RETRIES ? 0 : Math.max(0, entry.at + REFILL_MS - Date.now());
   }
 
+  // Pays for a run that ended; false when none was left and the chamber now owes one.
   function spendRetry(chapter, chamber) {
     if (unlimited()) return true;
     const entry = retriesEntry(chapter, chamber);
-    if (entry.left <= 0) return false;
-    entry.left--;
+    if (entry.left > 0) entry.left--;
+    else entry.owed = true;
     S.saveEconomy();
-    return true;
+    return !entry.owed;
   }
 
+  // An earned retry first settles a debt, else stocks one up to the maximum.
   function grantRetry(chapter, chamber) {
     const entry = retriesEntry(chapter, chamber);
-    entry.left = Math.min(MAX_RETRIES, entry.left + 1);
+    if (entry.owed) entry.owed = false;
+    else entry.left = Math.min(MAX_RETRIES, entry.left + 1);
     S.saveEconomy();
   }
 
@@ -80,5 +87,5 @@ const LumenEconomy = (() => {
   // "m:ss" for the refill countdown.
   const clock = (ms) => `${Math.floor(ms / 60000)}:${String(Math.ceil((ms % 60000) / 1000) % 60).padStart(2, '0')}`;
 
-  return { MAX_RETRIES, HINTS_PER_CHAPTER, retriesLeft, refillIn, spendRetry, grantRetry, clearRetries, hintsLeft, spendHint, grantHint, clock };
+  return { MAX_RETRIES, HINTS_PER_CHAPTER, retriesLeft, owes, refillIn, spendRetry, grantRetry, clearRetries, hintsLeft, spendHint, grantHint, clock };
 })();

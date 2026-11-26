@@ -65,6 +65,8 @@ const LumenGame = (() => {
     el.footer.hidden = false;
     renderText();
     update();
+    // A chamber that still owes a retry opens on the out card.
+    if (LumenEconomy.owes(chapter, chamber)) { state.phase = 'lost'; showOut(t('noRetries')); }
   }
 
   function renderText() {
@@ -112,6 +114,7 @@ const LumenGame = (() => {
       }, travel);
     } else if (left <= 0) {
       state.phase = 'lost';
+      LumenEconomy.spendRetry(state.chapter, state.chamber);
       showOut(t('outTitle'));
       LumenFeedback.out();
     }
@@ -122,16 +125,18 @@ const LumenGame = (() => {
     el.retries.textContent = left === Infinity ? '' : t('retries', left);
   }
 
-  // The out card: a retry while some are left, else the refill countdown and
-  // an ad for one more. It re-renders every second so the countdown moves.
+  // The out card: "try again" when the ended run was paid for, else the
+  // refill countdown and an ad to settle the debt. It re-renders every
+  // second so the countdown moves and a refill switches it over.
   let outTimer = 0;
   function showOut(title) {
+    const owed = LumenEconomy.owes(state.chapter, state.chamber);
     const left = LumenEconomy.retriesLeft(state.chapter, state.chamber);
     el.outTitle.textContent = title;
-    el.outBody.textContent = left > 0
-      ? `${t('outBody')} ${left === Infinity ? '' : t('retriesLeft', left)}`.trim()
-      : `${title === t('noRetries') ? '' : `${t('noRetries')}. `}${t('refillIn', LumenEconomy.clock(LumenEconomy.refillIn(state.chapter, state.chamber)))}`;
-    el.retry.textContent = left > 0 ? t('tryAgain') : t('adRetry');
+    el.outBody.textContent = owed
+      ? `${title === t('noRetries') ? '' : `${t('noRetries')}. `}${t('refillIn', LumenEconomy.clock(LumenEconomy.refillIn(state.chapter, state.chamber)))}`
+      : `${t('outBody')} ${left === Infinity ? '' : t('retriesLeft', left)}`.trim();
+    el.retry.textContent = owed ? t('adRetry') : t('tryAgain');
     el.out.hidden = false;
     renderRetries();
     clearInterval(outTimer);
@@ -143,16 +148,16 @@ const LumenGame = (() => {
     el.out.hidden = true;
   }
 
-  // Retrying spends a retry; with none left an ad earns the one to spend.
+  // The ended run was paid for when it ended; a debt needs an ad first.
   async function retry() {
-    if (LumenEconomy.retriesLeft(state.chapter, state.chamber) <= 0) {
+    if (LumenEconomy.owes(state.chapter, state.chamber)) {
       if (!(await LumenRewards.showRewarded('retry'))) return;
       LumenEconomy.grantRetry(state.chapter, state.chamber);
     }
-    if (LumenEconomy.spendRetry(state.chapter, state.chamber)) load(state.chapter, state.chamber);
+    load(state.chapter, state.chamber);
   }
 
-  // Restarting an untouched or solved chamber is free; after a turn it is a retry.
+  // Restarting an untouched or solved chamber is free; after a turn it ends a run.
   function restart() {
     if (state.moves === 0 || state.phase === 'won') { load(state.chapter, state.chamber); return; }
     if (LumenEconomy.spendRetry(state.chapter, state.chamber)) load(state.chapter, state.chamber);

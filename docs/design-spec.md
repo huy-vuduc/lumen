@@ -116,10 +116,12 @@ The "open every chapter" switch exists only in the playtest build (GitHub Pages 
 ## Hints, retries and ads (2026-11-26)
 
 The game is free with rewarded ads only: no interstitials, so the calm pace stays intact.
-- Retries: each chamber allows 2 retries. One is spent when the rotations run out or
-  the player restarts after at least one turn (restarting an untouched chamber is free).
-  One retry returns every 30 minutes, never above 2; solving the chamber clears its
-  counter. With none left the out card shows the countdown and "Watch an ad for +1 retry".
+- Retries: each chamber allows 2 retries. One is spent the moment a run ends: when the
+  rotations run out or the player restarts after at least one turn (restarting an
+  untouched chamber is free). A run that ends with none left leaves the chamber owing
+  one, and it reopens on the out card until a refill or an ad settles the debt, so
+  leaving and coming back cannot skip the limit. One retry returns every 30 minutes,
+  never above 2; solving the chamber clears its counter.
 - Hints: the hint popup keeps the free goal and mechanic lines and adds "Show a mirror",
   3 per chapter: one mirror whose orientation still differs from the stored solution
   pulses with an accent outline for about 2.6 s. With none left the button becomes
