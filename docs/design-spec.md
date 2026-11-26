@@ -105,7 +105,13 @@ Added 2026-11-18 for chapters 4 to 12. Chapter tints 7 to 12: #F3F7F2, #F6F3EE, 
 ## Chapters and difficulty
 
 12 chapters of 10 chambers, generated once by `scripts/build-lumen-levels.js` into
-`lumen/lumen-levels-data.js` (the game never runs the generator or the solver). Chapter 1
+`lumen/lumen-levels-data.js` (the game never runs the generator or the solver). The
+script keeps every chapter already in that file and only generates missing ones, so a
+new chapter or a generator change never alters chambers players have seen; `--rebuild`
+with chapter numbers is the only way to regenerate an existing chapter. Player progress
+is stored per `chapter-chamber` key and does not depend on the chapter count.
+The "open every chapter" switch exists only in the playtest build (GitHub Pages sets
+`window.LUMEN_PLAYTEST`); the app build hides it and ignores a saved value. Chapter 1
 teaches with 1 to 3 rotations. From chapter 2 every chamber is a real puzzle: minimum
 rotations climb 3 to 5 (chapter 2), 4 to 7 (3 and 4), 4 to 8 (5 to 8), 6 to 9 (9 and 10),
 8 to 10 (11) and 9 to 10 (12), among 5 to 21 rotatable mirrors. Boards grow from 7 x 7

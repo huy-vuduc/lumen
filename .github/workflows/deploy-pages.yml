@@ -25,11 +25,13 @@ jobs:
       - uses: actions/checkout@v4
       # index.html is written for the Claude artifact wrapper, which adds the
       # document skeleton; a doctype is enough for browsers to do the same.
+      # LUMEN_PLAYTEST marks this site as the playtest build: it shows the
+      # "open every chapter" switch that the app build does not have.
       - name: Build static site
         run: |
           mkdir dist
           cp lumen/* dist/
-          { echo '<!doctype html>'; echo '<html lang="en">'; cat lumen/index.html; echo '</html>'; } > dist/index.html
+          { echo '<!doctype html>'; echo '<html lang="en">'; echo '<script>window.LUMEN_PLAYTEST = true</script>'; cat lumen/index.html; echo '</html>'; } > dist/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

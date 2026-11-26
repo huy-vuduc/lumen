@@ -78,7 +78,7 @@ const LumenMenus = (() => {
         <button type="button" data-lang="en" aria-pressed="${s.lang === 'en'}">English</button>
         <button type="button" data-lang="vi" aria-pressed="${s.lang === 'vi'}">Tiếng Việt</button></span></div>
       <div class="micro">${t('progress')}</div>
-      ${toggle('unlockAll', t('unlockAll'), s.unlockAll, t('unlockAllDesc'))}
+      ${S.PLAYTEST ? toggle('unlockAll', t('unlockAll'), s.unlockAll, t('unlockAllDesc')) : ''}
       <button type="button" class="setting danger" id="settings-reset"><span class="label">${t('reset')}</span></button>`;
     document.querySelectorAll('#settings-body [data-setting]').forEach((btn) => {
       btn.addEventListener('click', () => { S.setSetting(btn.dataset.setting, !S.getSettings()[btn.dataset.setting]); renderSettings(); });

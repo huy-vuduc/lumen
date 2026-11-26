@@ -2,11 +2,13 @@
 // guarded because storage can be unavailable in private windows or previews.
 const LumenStorage = (() => {
   const KEY = 'lumen.v1';
+  // Playtest builds (GitHub Pages sets window.LUMEN_PLAYTEST) get a switch
+  // that opens every chapter; the app build has no switch and ignores a saved one.
+  const PLAYTEST = typeof window !== 'undefined' && Boolean(window.LUMEN_PLAYTEST);
   const defaults = () => ({
     done: {},
     current: { chapter: 1, chamber: 1 },
-    // unlockAll is a playtest switch: every chapter and chamber opens at once.
-    settings: { sound: true, haptics: true, lang: 'en', unlockAll: true },
+    settings: { sound: true, haptics: true, lang: 'en', unlockAll: PLAYTEST },
   });
 
   let state = load();
@@ -16,7 +18,9 @@ const LumenStorage = (() => {
       const raw = localStorage.getItem(KEY);
       if (!raw) return defaults();
       const parsed = JSON.parse(raw);
-      return { ...defaults(), ...parsed, settings: { ...defaults().settings, ...(parsed.settings || {}) } };
+      const settings = { ...defaults().settings, ...(parsed.settings || {}) };
+      if (!PLAYTEST) settings.unlockAll = false;
+      return { ...defaults(), ...parsed, settings };
     } catch {
       return defaults();
     }
@@ -75,5 +79,5 @@ const LumenStorage = (() => {
     save();
   }
 
-  return { isDone, markDone, chapterProgress, isChapterUnlocked, isLevelUnlocked, setCurrent, getCurrent, nextToPlay, getSettings, setSetting, reset };
+  return { PLAYTEST, isDone, markDone, chapterProgress, isChapterUnlocked, isLevelUnlocked, setCurrent, getCurrent, nextToPlay, getSettings, setSetting, reset };
 })();
