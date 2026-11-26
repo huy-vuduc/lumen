@@ -152,7 +152,13 @@ const LumenBoard = (() => {
       return Math.max(0, ...arrival.values());
     }
 
-    return { update };
+    // Marks a mirror for a moment, used by the "show a mirror" hint.
+    function highlight(i) {
+      mirrors[i].tile.classList.add('hinted');
+      setTimeout(() => mirrors[i].tile.classList.remove('hinted'), 2600);
+    }
+
+    return { update, highlight };
   }
 
   return { mount, BEAM: P.BEAM };

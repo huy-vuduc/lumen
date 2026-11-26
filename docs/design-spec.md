@@ -111,7 +111,26 @@ new chapter or a generator change never alters chambers players have seen; `--re
 with chapter numbers is the only way to regenerate an existing chapter. Player progress
 is stored per `chapter-chamber` key and does not depend on the chapter count.
 The "open every chapter" switch exists only in the playtest build (GitHub Pages sets
-`window.LUMEN_PLAYTEST`); the app build hides it and ignores a saved value. Chapter 1
+`window.LUMEN_PLAYTEST`); the app build hides it and ignores a saved value.
+
+## Hints, retries and ads (2026-11-26)
+
+The game is free with rewarded ads only: no interstitials, so the calm pace stays intact.
+- Retries: each chamber allows 2 retries. One is spent when the rotations run out or
+  the player restarts after at least one turn (restarting an untouched chamber is free).
+  One retry returns every 30 minutes, never above 2; solving the chamber clears its
+  counter. With none left the out card shows the countdown and "Watch an ad for +1 retry".
+- Hints: the hint popup keeps the free goal and mechanic lines and adds "Show a mirror",
+  3 per chapter: one mirror whose orientation still differs from the stored solution
+  pulses with an accent outline for about 2.6 s. With none left the button becomes
+  "Watch an ad for a hint". Solutions come from `lumen-solutions-data.js`, built by
+  `scripts/build-lumen-solutions.js` from the level data (so old chambers stay untouched).
+- Ads: `lumen-rewards.js` asks `window.LumenAdProvider.showRewarded(kind)` when the
+  native app installs one; otherwise a stand-in card counts down 3 seconds (Cancel gives
+  nothing). Counters live in the saved state under `economy`; the playtest "unlimited"
+  switch lifts both limits and hides the retry count.
+- Header shows "n retries" under the chamber name; the out card has a Back link so a
+  player who declines the ad can leave. Chapter 1
 teaches with 1 to 3 rotations. From chapter 2 every chamber is a real puzzle: minimum
 rotations climb 3 to 5 (chapter 2), 4 to 7 (3 and 4), 4 to 8 (5 to 8), 6 to 9 (9 and 10),
 8 to 10 (11) and 9 to 10 (12), among 5 to 21 rotatable mirrors. Boards grow from 7 x 7

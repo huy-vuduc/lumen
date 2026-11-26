@@ -21,12 +21,21 @@ const LumenGame = (() => {
       solvedText: document.getElementById('game-solved-text'),
       next: document.getElementById('game-next'),
       out: document.getElementById('game-out'),
+      outTitle: document.getElementById('game-out-title'),
+      outBody: document.getElementById('game-out-body'),
+      retry: document.getElementById('game-retry'),
+      outBack: document.getElementById('game-out-back'),
+      retries: document.getElementById('game-retries'),
       hintBtn: document.getElementById('game-hint'),
       hintPop: document.getElementById('game-hint-pop'),
+      hintTitle: document.getElementById('game-hint-title'),
       hintBody: document.getElementById('game-hint-body'),
+      hintReveal: document.getElementById('game-hint-reveal'),
     };
-    document.getElementById('game-restart').addEventListener('click', () => load(state.chapter, state.chamber));
-    document.getElementById('game-retry').addEventListener('click', () => load(state.chapter, state.chamber));
+    LumenGameHint.bind(el, revealMirror);
+    document.getElementById('game-restart').addEventListener('click', restart);
+    el.retry.addEventListener('click', retry);
+    el.outBack.addEventListener('click', () => { location.hash = `#levels/${state.chapter}`; });
     el.next.addEventListener('click', goNext);
     el.hintBtn.addEventListener('click', () => { el.hintPop.hidden = !el.hintPop.hidden; });
     el.header.addEventListener('click', () => { location.hash = `#levels/${state.chapter}`; });
@@ -51,20 +60,11 @@ const LumenGame = (() => {
     state.board = LumenBoard.mount(el.svg, state.level, { fogColor: info.fog, onMirrorTap });
     el.pips.replaceChildren(...Array.from({ length: state.limit }, () => document.createElement('span')));
     el.solved.hidden = true;
-    el.out.hidden = true;
+    hideOut();
     el.hintPop.hidden = true;
     el.footer.hidden = false;
     renderText();
     update();
-  }
-
-  // "dot + dot = dot" for a mixed colour. Names stay only as labels for
-  // screen readers; pale dots get a keyline so they show on the light page.
-  function formulaHtml(mask) {
-    const { parts, result } = LumenI18n.mixFormula(mask);
-    const chip = (name, color) => `<span class="chip" role="img" aria-label="${name}"><i style="--c:${LumenBoard.BEAM[color]}${LumenPieces.KEYLINE[color] ? `;--k:${LumenPieces.KEYLINE[color]}` : ''}"></i></span>`;
-    const colors = [1, 2, 4].filter((c) => mask & c);
-    return `${parts.map((p, i) => chip(p, colors[i])).join('<span class="op">+</span>')}<span class="op">=</span>${chip(result, mask)}`;
   }
 
   function renderText() {
@@ -77,34 +77,11 @@ const LumenGame = (() => {
     const level = state.level;
     const mixedTarget = level.targets.find((x) => (x.color & (x.color - 1)) !== 0);
     el.rule.hidden = state.chamber !== 1;
-    el.rule.innerHTML = info.formula && mixedTarget ? formulaHtml(mixedTarget.color) : `<span class="caption">${info.ruleLine[lang]}</span>`;
-    // Each hint line shows the piece it talks about, drawn as on the board.
-    const line = (icon, html) => {
-      const row = document.createElement('div');
-      row.className = 'hint-line';
-      row.append(icon);
-      row.insertAdjacentHTML('beforeend', html);
-      return row;
-    };
-    const mixed = (c) => (c & (c - 1)) !== 0;
-    const goals = [...new Set(level.targets.filter((x) => x.color !== 0).map((x) => x.color))].map((color) => line(
-      LumenPieces.icon('ring', color),
-      mixed(color) ? `<div class="formula">${formulaHtml(color)}</div>` : `<span class="caption">${t('guide', LumenI18n.colorName(color))}</span>`,
-    ));
-    const mechanics = [
-      level.mirrors.some((m) => m.fixed) && ['fixed', t('hintFixed')],
-      level.splitters?.length && ['splitter', t('hintSplit')],
-      level.filters?.length && ['filter', t('hintFilter'), level.filters[0].color],
-      level.portals?.length && ['portal', t('hintPortal')],
-      level.targets.some((x) => x.color === 0) && ['dark', t('hintDark')],
-    ].filter(Boolean).map(([kind, text, color]) => line(LumenPieces.icon(kind, color), `<span class="caption">${text}</span>`));
-    el.hintBody.replaceChildren(...goals, ...mechanics);
-    el.hintBtn.setAttribute('aria-label', t('hint'));
+    el.rule.innerHTML = info.formula && mixedTarget ? LumenGameHint.formulaHtml(mixedTarget.color) : `<span class="caption">${info.ruleLine[lang]}</span>`;
+    LumenGameHint.render(level, state.chapter);
     document.getElementById('game-restart').setAttribute('aria-label', t('restart'));
-    document.getElementById('game-hint-title').textContent = t('hintTitle');
-    document.getElementById('game-out-title').textContent = t('outTitle');
-    document.getElementById('game-out-body').textContent = t('outBody');
-    document.getElementById('game-retry').textContent = t('tryAgain');
+    el.outBack.textContent = t('back');
+    renderRetries();
     el.next.textContent = t('next');
   }
 
@@ -121,6 +98,7 @@ const LumenGame = (() => {
     if (result.solved) {
       state.phase = 'won';
       LumenStorage.markDone(state.chapter, state.chamber);
+      LumenEconomy.clearRetries(state.chapter, state.chamber);
       const last = state.chapter === LumenChapters.CHAPTERS.length && state.chamber === LumenChapters.LEVELS_PER_CHAPTER;
       el.solvedText.textContent = last ? t('allLit') : t('lit', state.chamber);
       el.footer.hidden = true;
@@ -134,9 +112,61 @@ const LumenGame = (() => {
       }, travel);
     } else if (left <= 0) {
       state.phase = 'lost';
-      el.out.hidden = false;
+      showOut(t('outTitle'));
       LumenFeedback.out();
     }
+  }
+
+  function renderRetries() {
+    const left = LumenEconomy.retriesLeft(state.chapter, state.chamber);
+    el.retries.textContent = left === Infinity ? '' : t('retries', left);
+  }
+
+  // The out card: a retry while some are left, else the refill countdown and
+  // an ad for one more. It re-renders every second so the countdown moves.
+  let outTimer = 0;
+  function showOut(title) {
+    const left = LumenEconomy.retriesLeft(state.chapter, state.chamber);
+    el.outTitle.textContent = title;
+    el.outBody.textContent = left > 0
+      ? `${t('outBody')} ${left === Infinity ? '' : t('retriesLeft', left)}`.trim()
+      : `${title === t('noRetries') ? '' : `${t('noRetries')}. `}${t('refillIn', LumenEconomy.clock(LumenEconomy.refillIn(state.chapter, state.chamber)))}`;
+    el.retry.textContent = left > 0 ? t('tryAgain') : t('adRetry');
+    el.out.hidden = false;
+    renderRetries();
+    clearInterval(outTimer);
+    outTimer = setInterval(() => showOut(title), 1000);
+  }
+
+  function hideOut() {
+    clearInterval(outTimer);
+    el.out.hidden = true;
+  }
+
+  // Retrying spends a retry; with none left an ad earns the one to spend.
+  async function retry() {
+    if (LumenEconomy.retriesLeft(state.chapter, state.chamber) <= 0) {
+      if (!(await LumenRewards.showRewarded('retry'))) return;
+      LumenEconomy.grantRetry(state.chapter, state.chamber);
+    }
+    if (LumenEconomy.spendRetry(state.chapter, state.chamber)) load(state.chapter, state.chamber);
+  }
+
+  // Restarting an untouched or solved chamber is free; after a turn it is a retry.
+  function restart() {
+    if (state.moves === 0 || state.phase === 'won') { load(state.chapter, state.chamber); return; }
+    if (LumenEconomy.spendRetry(state.chapter, state.chamber)) load(state.chapter, state.chamber);
+    else { state.phase = 'lost'; showOut(t('noRetries')); }
+  }
+
+  // Marks one mirror that still differs from the stored solution.
+  function revealMirror() {
+    const data = typeof LumenSolutionsData !== 'undefined' && LumenSolutionsData[state.chapter - 1];
+    const flips = (data && data[state.chamber - 1]) || [];
+    const solvedTypes = state.level.mirrors.map((m) => m.type);
+    flips.forEach((i) => { solvedTypes[i] = LumenEngine.toggle(solvedTypes[i]); });
+    const i = solvedTypes.findIndex((type, k) => type !== state.mirrorTypes[k]);
+    if (i >= 0) state.board.highlight(i);
   }
 
   function onMirrorTap(i) {

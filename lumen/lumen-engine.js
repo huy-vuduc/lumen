@@ -103,28 +103,37 @@ const LumenEngine = (() => {
     return type === 'slash' ? 'back' : 'slash';
   }
 
-  // Fewest toggles from the starting orientation that solve the level, or -1.
-  // Tries every set of k mirrors for k = 0, 1, 2... so the search stops as
-  // soon as the smallest solution is found.
-  function minimumMoves(level) {
+  // Smallest set of rotatable mirror indexes to turn from the starting
+  // orientation so the level is solved, or null. Tries every set of k mirrors
+  // for k = 0, 1, 2... so the search stops at the first, smallest solution.
+  function solve(level) {
     const rotatable = level.mirrors.map((m, i) => (m.fixed ? -1 : i)).filter((i) => i >= 0);
     const types = level.mirrors.map((m) => m.type);
     const flip = (i) => { types[i] = toggle(types[i]); };
+    const chosen = [];
     // Flip `left` more mirrors chosen from rotatable[from..]; true once solved.
     function search(from, left) {
       if (left === 0) return trace(level, types).solved;
       for (let i = from; i <= rotatable.length - left; i++) {
         flip(rotatable[i]);
+        chosen.push(rotatable[i]);
         if (search(i + 1, left - 1)) return true;
+        chosen.pop();
         flip(rotatable[i]);
       }
       return false;
     }
-    for (let k = 0; k <= rotatable.length; k++) if (search(0, k)) return k;
-    return -1;
+    for (let k = 0; k <= rotatable.length; k++) if (search(0, k)) return chosen;
+    return null;
   }
 
-  return { DIRS, reflect, trace, toggle, minimumMoves };
+  // Fewest toggles that solve the level, or -1.
+  function minimumMoves(level) {
+    const solution = solve(level);
+    return solution ? solution.length : -1;
+  }
+
+  return { DIRS, reflect, trace, toggle, solve, minimumMoves };
 })();
 
 if (typeof module !== 'undefined') module.exports = LumenEngine;

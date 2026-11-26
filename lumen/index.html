@@ -46,6 +46,7 @@
   <button type="button" id="game-header" class="game-header">
     <span class="micro" id="game-chapter"></span>
     <span class="chamber" id="game-chamber"></span>
+    <span class="micro" id="game-retries"></span>
   </button>
   <div id="game-rule" class="rule" hidden></div>
   <div class="spacer"></div>
@@ -54,6 +55,7 @@
   <div id="game-hint-pop" class="hint-pop" hidden>
     <div class="hint-title" id="game-hint-title"></div>
     <div id="game-hint-body"></div>
+    <button type="button" id="game-hint-reveal" class="hint-action"></button>
   </div>
   <div class="game-bottom">
   <div id="game-footer" class="game-footer">
@@ -75,6 +77,15 @@
       <div class="modal-title" id="game-out-title"></div>
       <div class="caption" id="game-out-body"></div>
       <button type="button" id="game-retry" class="primary"></button>
+      <button type="button" id="game-out-back" class="secondary"></button>
+    </div>
+  </div>
+  <div id="game-ad" class="overlay" hidden>
+    <div class="card-modal" role="dialog" aria-labelledby="game-ad-title">
+      <div class="modal-title" id="game-ad-title"></div>
+      <div class="caption" id="game-ad-body"></div>
+      <div class="numeral" id="game-ad-count"></div>
+      <button type="button" id="game-ad-cancel" class="secondary"></button>
     </div>
   </div>
 </section>
@@ -89,12 +100,16 @@
 
 <script src="lumen-engine.js"></script>
 <script src="lumen-levels-data.js"></script>
+<script src="lumen-solutions-data.js"></script>
 <script src="lumen-chapters.js"></script>
 <script src="lumen-i18n.js"></script>
 <script src="lumen-storage.js"></script>
+<script src="lumen-economy.js"></script>
+<script src="lumen-rewards.js"></script>
 <script src="lumen-feedback.js"></script>
 <script src="lumen-board-pieces.js"></script>
 <script src="lumen-board.js"></script>
+<script src="lumen-game-hint.js"></script>
 <script src="lumen-game.js"></script>
 <script src="lumen-menus.js"></script>
 <script src="lumen-home-intro.js"></script>

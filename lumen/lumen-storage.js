@@ -8,7 +8,10 @@ const LumenStorage = (() => {
   const defaults = () => ({
     done: {},
     current: { chapter: 1, chamber: 1 },
-    settings: { sound: true, haptics: true, lang: 'en', unlockAll: PLAYTEST },
+    // unlimited lifts the hint and retry limits; also playtest only.
+    settings: { sound: true, haptics: true, lang: 'en', unlockAll: PLAYTEST, unlimited: PLAYTEST },
+    // Hint and attempt counters, see lumen-economy.js.
+    economy: { hints: {}, retries: {} },
   });
 
   let state = load();
@@ -19,8 +22,9 @@ const LumenStorage = (() => {
       if (!raw) return defaults();
       const parsed = JSON.parse(raw);
       const settings = { ...defaults().settings, ...(parsed.settings || {}) };
-      if (!PLAYTEST) settings.unlockAll = false;
-      return { ...defaults(), ...parsed, settings };
+      if (!PLAYTEST) { settings.unlockAll = false; settings.unlimited = false; }
+      const economy = { ...defaults().economy, ...(parsed.economy || {}) };
+      return { ...defaults(), ...parsed, settings, economy };
     } catch {
       return defaults();
     }
@@ -68,6 +72,9 @@ const LumenStorage = (() => {
   }
 
   const getSettings = () => ({ ...state.settings });
+  // Live counters object; callers change it in place and then saveEconomy().
+  const economy = () => state.economy;
+  const saveEconomy = save;
   function setSetting(name, value) {
     state.settings[name] = value;
     save();
@@ -79,5 +86,5 @@ const LumenStorage = (() => {
     save();
   }
 
-  return { PLAYTEST, isDone, markDone, chapterProgress, isChapterUnlocked, isLevelUnlocked, setCurrent, getCurrent, nextToPlay, getSettings, setSetting, reset };
+  return { PLAYTEST, economy, saveEconomy, isDone, markDone, chapterProgress, isChapterUnlocked, isLevelUnlocked, setCurrent, getCurrent, nextToPlay, getSettings, setSetting, reset };
 })();

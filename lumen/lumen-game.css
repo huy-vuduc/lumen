@@ -38,6 +38,11 @@
 .hint-icon.board { flex: none; width: 34px; height: 34px; aspect-ratio: auto; border-radius: 10px; box-shadow: none; overflow: visible; background: var(--board-tint, var(--board)); }
 .hint-pop .hint-title { font-size: 13px; line-height: 18px; font-weight: 600; }
 .formula { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.hint-action { align-self: flex-start; margin-top: 4px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 20px; background: var(--ink); color: var(--surface); font-size: 14px; font-weight: 500; }
+.hint-action.ad { background: var(--accent); }
+.board .mirror-tile.hinted { stroke: var(--accent); stroke-width: 3; animation: hinted 0.65s ease-in-out 4; }
+@keyframes hinted { 50% { stroke-opacity: 0.2; } }
+.game-header #game-retries { margin-top: 2px; }
 
 /* The footer and the solved panel share one fixed slot, so swapping them
    never moves the board; the panel rises into place when the beam lands. */
@@ -57,10 +62,11 @@
 .card-modal { width: 100%; max-width: 366px; box-sizing: border-box; padding: 26px 24px 24px; border-radius: 28px; background: var(--surface); box-shadow: 0 24px 60px rgba(var(--shadow), 0.2); display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
 .card-modal .modal-title { font-size: 22px; line-height: 30px; font-weight: 500; }
 .card-modal .caption { font-size: 15px; line-height: 22px; margin-bottom: 14px; }
+.card-modal .numeral { font-size: 34px; line-height: 40px; font-weight: 500; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
 
 @media (prefers-reduced-motion: reduce) {
   .board .fog-cell, .board .mirror .mirror-bar, .board .target .core, .board .target .ring { transition: none; }
-  .board .beam, .board .beam-impact, .game-solved { animation: none !important; }
+  .board .beam, .board .beam-impact, .board .mirror-tile.hinted, .game-solved { animation: none !important; }
 }
 
 /* Stone mirrors, splitters, filters, portals and dark rings */
