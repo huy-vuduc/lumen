@@ -26,6 +26,7 @@ const LumenGame = (() => {
       retry: document.getElementById('game-retry'),
       outBack: document.getElementById('game-out-back'),
       retries: document.getElementById('game-retries'),
+      back: document.getElementById('game-back'),
       hintBtn: document.getElementById('game-hint'),
       hintPop: document.getElementById('game-hint-pop'),
       hintTitle: document.getElementById('game-hint-title'),
@@ -52,6 +53,7 @@ const LumenGame = (() => {
     state.limit = state.level.minMoves + state.level.extraMoves;
     state.phase = 'playing';
     LumenStorage.setCurrent(chapter, chamber);
+    el.back.href = `#levels/${chapter}`;
 
     const info = chapterInfo();
     el.screen.style.setProperty('--board-tint', info.tint);
@@ -82,6 +84,7 @@ const LumenGame = (() => {
     LumenGameHint.render(level, state.chapter);
     document.getElementById('game-restart').setAttribute('aria-label', t('restart'));
     el.outBack.textContent = t('back');
+    el.back.setAttribute('aria-label', t('back'));
     renderRetries();
     el.next.textContent = t('next');
   }

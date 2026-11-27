@@ -44,14 +44,16 @@ Red is darker than green on purpose (luminance 0.15 vs 0.25).
 - Header 72 high: micro-label "Chapter 3 · Blended Light" over "Chamber 7". Tapping it goes back to the level grid.
 - Board = width − 32, square, radius 28, padding 4. Cell = (width − 40) / 7: 50 at 390 wide, 45.7 at 360.
   The whole cell is the tap target. Board shadow 0 18 40 at 10% plus 1 px inset edge at 7%.
-- Footer row 96 high above the safe area: restart (52 circle, white, shadow 0 6 16 at 16% + 0 1.5 0),
-  counter in the middle (numeral, micro-label, 6 px pips with 6 gap, one per rotation), hint (52 circle).
+- Footer 140 high above the safe area (2026-11-27): the counter on top (numeral, micro-label, 6 px pips
+  with 6 gap, one per rotation), then a row of three 52 circles (white, shadow 0 6 16 at 16% + 0 1.5 0):
+  back to the level grid, restart, hint. Was one row of restart · counter · hint with no back button.
 - Solved: footer becomes status line + full-width primary button "Next".
 - Out of rotations: page overlay rgba(245,239,228,0.4), white card radius 28, padding 26 24 24,
   shadow 0 24 60 at 20%, title 22/30, caption, primary button "Try again".
 - Hint: popover card above the footer titled "This chamber" with the mix formula chips. The bulb toggles it and a tap anywhere outside closes it (2026-11-27).
 - Primary button: height 56, radius 28, fill accent, white label, shadow 0 10 24 at 20%. One per screen.
-- Cards radius 24, level tiles radius 22, tile height 100, two columns, gap 14.
+- Chapter cards and level tiles radius 22, height 100 (cards were 124 x 24, shortened 2026-11-27), tiles two columns, gap 14.
+- Back button on the menu screens: 44 white disc with the footer shadow, on the 16 margin (2026-11-27).
 
 ## Board pieces (fractions of a cell)
 

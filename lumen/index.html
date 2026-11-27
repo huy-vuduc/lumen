@@ -58,13 +58,16 @@
   </div>
   <div class="game-bottom">
   <div id="game-footer" class="game-footer">
-    <button type="button" id="game-restart" class="icon-btn" aria-label="Restart"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg></button>
     <div class="counter">
       <div class="numeral" id="game-numeral">0</div>
       <div class="micro" id="game-counter-label"></div>
       <div class="pips" id="game-pips"></div>
     </div>
-    <button type="button" id="game-hint" class="icon-btn" aria-label="Hint"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2.2h5c.1-1 .5-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg></button>
+    <div class="game-actions">
+      <a href="#levels/1" id="game-back" class="icon-btn" aria-label="Back"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <button type="button" id="game-restart" class="icon-btn" aria-label="Restart"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg></button>
+      <button type="button" id="game-hint" class="icon-btn" aria-label="Hint"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2.2h5c.1-1 .5-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg></button>
+    </div>
   </div>
   <div id="game-solved" class="game-solved" hidden>
     <div class="status" id="game-solved-text"></div>
