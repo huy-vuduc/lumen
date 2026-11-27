@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Android adaptive foreground on a transparent layer. The generator maps
+       this image onto the 72 dp visible area, so the glyph (634 of 1024 in the
+       master) is scaled 1.2x so its diagonal ends stay inside the 66 dp safe zone. Background: #FCF8F0. -->
+  <g transform="translate(512 512) scale(1.2) translate(-512 -512) translate(-19 19)">
+    <rect x="344" y="176" width="96" height="400" rx="48" fill="#2F6BF0"/>
+    <polygon points="344,480 440,480 440,584 600,584 600,680 440,680 344,584" fill="#2F6BF0"/>
+    <rect x="540" y="584" width="308" height="96" rx="48" fill="#2F6BF0"/>
+    <rect x="-210" y="-42" width="420" height="84" rx="42" fill="#2B3542" transform="translate(392 632) rotate(45)"/>
+  </g>
+</svg>

@@ -150,8 +150,11 @@ mixing (3), stone mirrors (4), splitter (5), dark rings (6), filters (7), portal
 Capacitor 8 at the repo root wraps `lumen/` for iOS and Android (`npm run sync`). The
 web build stays bundler-free; only `app/native-ads.js` is bundled, by esbuild, into
 `www/lumen-native-ads.js`. Be Vietnam Pro is served from `lumen/fonts/` (latin and
-Vietnamese subsets, 300 to 600) so the app and the site work offline. The app icon is a
-mirror tile bending a red beam upward on the page tone (`app/icon/logo.svg`). AdMob IDs
+Vietnamese subsets, 300 to 600) so the app and the site work offline. The app icon (2026-11-27, from the "App icon" artboard, concept "Elbow") is a
+blue #2F6BF0 beam that meets the mirror bar and turns, the turn drawing an L, flat on the
+chapter 1 board tone #FCF8F0 with no baked corners (`app/icon/logo.svg`); the Android
+adaptive foreground is the same glyph scaled 1.2x on a transparent layer so it fills the
+safe zone once the generator insets it (`app/icon/icon-foreground.svg`). AdMob IDs
 are Google's test IDs until the account is approved. Haptics go through `@capacitor/haptics` (`app/native-haptics.js`: light impact on a
 tap, success and warning notifications) because WKWebView has no `navigator.vibrate`.
 Screens pad for the notch and home indicator with `env(safe-area-inset-*)`; the game
