@@ -11,6 +11,13 @@ const LumenGameHint = (() => {
     el = elements;
     onReveal = reveal;
     el.hintReveal.addEventListener('click', request);
+    el.hintBtn.addEventListener('click', () => { el.hintPop.hidden = !el.hintPop.hidden; });
+    // A tap anywhere outside the popup closes it; the tap itself still lands
+    // (a mirror under it turns, the bulb toggles).
+    document.addEventListener('pointerdown', (e) => {
+      if (el.hintPop.hidden || el.hintPop.contains(e.target) || el.hintBtn.contains(e.target)) return;
+      el.hintPop.hidden = true;
+    });
   }
 
   // "dot + dot = dot" for a mixed colour. Names stay only as labels for

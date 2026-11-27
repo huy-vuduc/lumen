@@ -49,7 +49,7 @@ Red is darker than green on purpose (luminance 0.15 vs 0.25).
 - Solved: footer becomes status line + full-width primary button "Next".
 - Out of rotations: page overlay rgba(245,239,228,0.4), white card radius 28, padding 26 24 24,
   shadow 0 24 60 at 20%, title 22/30, caption, primary button "Try again".
-- Hint: popover card above the footer titled "This chamber" with the mix formula chips.
+- Hint: popover card above the footer titled "This chamber" with the mix formula chips. The bulb toggles it and a tap anywhere outside closes it (2026-11-27).
 - Primary button: height 56, radius 28, fill accent, white label, shadow 0 10 24 at 20%. One per screen.
 - Cards radius 24, level tiles radius 22, tile height 100, two columns, gap 14.
 
@@ -111,7 +111,7 @@ new chapter or a generator change never alters chambers players have seen; `--re
 with chapter numbers is the only way to regenerate an existing chapter. Player progress
 is stored per `chapter-chamber` key and does not depend on the chapter count.
 The "open every chapter" switch exists only in the playtest build (GitHub Pages sets
-`window.LUMEN_PLAYTEST`); the app build hides it and ignores a saved value.
+`window.LUMEN_PLAYTEST`, and so does the app build until `--release`); a release build hides it and ignores a saved value.
 
 ## Hints, retries and ads (2026-11-26)
 

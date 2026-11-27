@@ -37,7 +37,6 @@ const LumenGame = (() => {
     el.retry.addEventListener('click', retry);
     el.outBack.addEventListener('click', () => { location.hash = `#levels/${state.chapter}`; });
     el.next.addEventListener('click', goNext);
-    el.hintBtn.addEventListener('click', () => { el.hintPop.hidden = !el.hintPop.hidden; });
     el.header.addEventListener('click', () => { location.hash = `#levels/${state.chapter}`; });
   }
 
