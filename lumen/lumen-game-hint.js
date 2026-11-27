@@ -58,8 +58,9 @@ const LumenGameHint = (() => {
 
   async function request() {
     if (LumenEconomy.hintsLeft(chapter) <= 0) {
-      if (!(await LumenRewards.showRewarded('hint'))) return;
-      LumenEconomy.grantHint(chapter);
+      if (await LumenRewards.showRewarded('hint')) LumenEconomy.grantHint(chapter);
+      updateButton();
+      return;
     }
     if (LumenEconomy.spendHint(chapter)) {
       el.hintPop.hidden = true;

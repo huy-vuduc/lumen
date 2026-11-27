@@ -125,7 +125,8 @@ The game is free with rewarded ads only: no interstitials, so the calm pace stay
 - Hints: the hint popup keeps the free goal and mechanic lines and adds "Show a mirror",
   3 per chapter: one mirror whose orientation still differs from the stored solution
   pulses with an accent outline for about 2.6 s. With none left the button becomes
-  "Watch an ad for a hint". Solutions come from `lumen-solutions-data.js`, built by
+  "Watch an ad for a hint"; the ad adds one hint to the counter (2026-11-27: it is no
+  longer spent automatically, so the reward is visible when the ad closes). Solutions come from `lumen-solutions-data.js`, built by
   `scripts/build-lumen-solutions.js` from the level data (so old chambers stay untouched).
 - Ads: `lumen-rewards.js` asks `window.LumenAdProvider.showRewarded(kind)` when the
   native app installs one (`app/native-ads.js`: Google UMP consent, iOS tracking prompt,
@@ -151,5 +152,7 @@ web build stays bundler-free; only `app/native-ads.js` is bundled, by esbuild, i
 `www/lumen-native-ads.js`. Be Vietnam Pro is served from `lumen/fonts/` (latin and
 Vietnamese subsets, 300 to 600) so the app and the site work offline. The app icon is a
 mirror tile bending a red beam upward on the page tone (`app/icon/logo.svg`). AdMob IDs
-are Google's test IDs until the account is approved. `navigator.vibrate` is a no-op in
-WKWebView, so iOS has sound feedback only.
+are Google's test IDs until the account is approved. Haptics go through `@capacitor/haptics` (`app/native-haptics.js`: light impact on a
+tap, success and warning notifications) because WKWebView has no `navigator.vibrate`.
+Screens pad for the notch and home indicator with `env(safe-area-inset-*)`; the game
+header sits just above the board (2026-11-27).

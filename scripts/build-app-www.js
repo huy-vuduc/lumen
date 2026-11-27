@@ -1,6 +1,6 @@
 // Builds www/ for the Capacitor app from lumen/: copies the game, wraps
 // index.html in the document skeleton (the web and artifact builds add their
-// own) and bundles the native ads bridge in app/native-ads.js. No playtest
+// own) and bundles the native bridges behind app/native.js. No playtest
 // flag, so the app build has neither the unlock-all nor the unlimited switch.
 // Run with: npm run build
 const fs = require('fs');
@@ -21,7 +21,7 @@ fs.writeFileSync(
 );
 
 esbuild.buildSync({
-  entryPoints: [path.join(root, 'app', 'native-ads.js')],
+  entryPoints: [path.join(root, 'app', 'native.js')],
   bundle: true,
   format: 'iife',
   target: 'es2020',

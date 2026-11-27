@@ -30,14 +30,20 @@ const LumenFeedback = (() => {
     osc.stop(ac.currentTime + start + duration + 0.05);
   }
 
-  function vibrate(pattern) {
+  // The native app installs window.LumenHaptics (see app/native-haptics.js)
+  // because WKWebView has no navigator.vibrate; the web falls back to it.
+  function vibrate(kind, pattern) {
     if (!LumenStorage.getSettings().haptics) return;
-    try { navigator.vibrate?.(pattern); } catch { /* unsupported */ }
+    try {
+      const native = window.LumenHaptics;
+      if (native) native[kind]();
+      else navigator.vibrate?.(pattern);
+    } catch { /* unsupported */ }
   }
 
   return {
-    tap() { note(520, 0, 0.09, 0.05); vibrate(8); },
-    solved() { note(523, 0, 0.35); note(659, 0.12, 0.35); note(784, 0.24, 0.6); vibrate([10, 40, 20]); },
-    out() { note(220, 0, 0.4, 0.06); vibrate(30); },
+    tap() { note(520, 0, 0.09, 0.05); vibrate('tap', 8); },
+    solved() { note(523, 0, 0.35); note(659, 0.12, 0.35); note(784, 0.24, 0.6); vibrate('solved', [10, 40, 20]); },
+    out() { note(220, 0, 0.4, 0.06); vibrate('out', 30); },
   };
 })();

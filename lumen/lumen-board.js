@@ -22,7 +22,12 @@ const LumenBoard = (() => {
     const fogCells = [];
     for (let y = 0; y < level.height; y++) {
       for (let x = 0; x < level.width; x++) {
-        fogCells.push(el('rect', { x: PAD + x * CELL - 1, y: PAD + y * CELL - 1, width: CELL + 2, height: CELL + 2, fill: fogColor, class: 'fog-cell' }, gFog));
+        // Edge cells run past the board so the blur leaves no pale rim.
+        const x0 = x === 0 ? -12 : PAD + x * CELL - 1;
+        const y0 = y === 0 ? -12 : PAD + y * CELL - 1;
+        const x1 = x === level.width - 1 ? size + 12 : PAD + (x + 1) * CELL + 1;
+        const y1 = y === level.height - 1 ? size + 12 : PAD + (y + 1) * CELL + 1;
+        fogCells.push(el('rect', { x: x0, y: y0, width: x1 - x0, height: y1 - y0, fill: fogColor, class: 'fog-cell' }, gFog));
       }
     }
     const wallKeys = new Set(level.walls.map(([x, y]) => `${x},${y}`));

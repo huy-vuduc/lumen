@@ -6,7 +6,7 @@ Twelve chapters, ten chambers each, in English and Vietnamese.
 Play: https://huy-vuduc.github.io/lumen/
 
 - `lumen/` – the game (plain HTML, CSS and JS, no build step); `lumen/fonts/` holds Be Vietnam Pro so it works offline
-- `app/` – native-only sources: `native-ads.js` (AdMob bridge) and `icon/logo.svg` (app icon source)
+- `app/` – native-only sources: `native.js` bundles `native-ads.js` (AdMob) and `native-haptics.js`; `icon/logo.svg` is the app icon source
 - `ios/`, `android/` – Capacitor projects, generated once and committed
 - `scripts/build-lumen-levels.js` – builds `lumen/lumen-levels-data.js` and prints the difficulty table. Chapters already in the file are kept; only new chapters are generated (`node scripts/build-lumen-levels.js`; `--rebuild 3,7` or `--rebuild all` regenerates named chapters). It then runs `scripts/build-lumen-solutions.js`, which solves new chambers into `lumen/lumen-solutions-data.js` for the "show a mirror" hint
 - `docs/` – design spec and notes

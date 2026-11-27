@@ -5,7 +5,7 @@
   --ink: #2B3542; --muted: #5A6676; --accent: #44648A; --warn: #935405;
   --shadow: 63, 86, 112;
   --font: 'Be Vietnam Pro', 'Nunito', system-ui, sans-serif;
-  --pad-top: 20px; --pad-bottom: 24px;
+  --pad-top: max(20px, calc(env(safe-area-inset-top, 0px) + 8px)); --pad-bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 12px));
   color-scheme: light;
 }
 html, body { height: 100%; }

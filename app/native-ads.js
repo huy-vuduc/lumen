@@ -2,7 +2,7 @@
 // window.LumenAdProvider, which lumen-rewards.js prefers over its stand-in
 // card. Bundled by scripts/build-app-www.js into www/lumen-native-ads.js.
 import { Capacitor } from '@capacitor/core';
-import { AdMob, AdmobConsentStatus } from '@capacitor-community/admob';
+import { AdMob, AdmobConsentStatus, RewardAdPluginEvents } from '@capacitor-community/admob';
 
 // Google's demo rewarded units: they always serve a test ad and never charge
 // an advertiser. Swap in the real units once the AdMob account is approved.
@@ -58,12 +58,18 @@ if (Capacitor.isNativePlatform()) {
 
   window.LumenAdProvider = {
     // Resolves true only when the ad was watched to the reward; closing it
-    // early rejects in the plugin and gives nothing.
+    // early rejects in the plugin and gives nothing. The plugin resolves the
+    // moment the reward is earned, while the ad is still on screen, so the
+    // result waits for the ad to close before the game reacts to it.
     async showRewarded() {
       if (!(await ready) || !(await load())) return false;
       loaded = false;
+      const closed = new Promise((resolve) => {
+        AdMob.addListener(RewardAdPluginEvents.Dismissed, () => resolve()).then((handle) => closed.then(() => handle.remove()));
+      });
       try {
         await AdMob.showRewardVideoAd();
+        await closed;
         return true;
       } catch {
         return false;
