@@ -9,14 +9,11 @@ bundle id `com.huyvu.lumen`, team `PVDWNW333Q`, version 1.0 (build 1).
   `app/native-ads.js` still hold Google's test IDs. Create the app in AdMob, add one
   rewarded unit, paste the app ID into the plist and the unit ID into `native-ads.js`.
   Test ads in a store build earn nothing and AdMob can flag the account.
-- **Devices.** `TARGETED_DEVICE_FAMILY = "1,2"` means iPad is a first-class target:
-  review tests it on iPad and iPad screenshots become mandatory. The layout is a 390-wide
-  portrait phone screen, so ship iPhone-only for 1.0 (`"1"`); it still runs on iPad in the
-  "Designed for iPhone" window.
-- **Orientation.** The plist allows landscape. Keep only `UIInterfaceOrientationPortrait`
-  so review never sees the board sideways.
-- **Encryption.** Add `ITSAppUsesNonExemptEncryption = false` to the plist (HTTPS only),
-  otherwise App Store Connect asks the export-compliance question on every build.
+- **Devices and orientation** (done 2026-11-28): iPhone-only (`TARGETED_DEVICE_FAMILY = 1`,
+  iPad later) and portrait only, so review never sees the 390-wide board sideways or
+  stretched; iPad screenshots are not required.
+- **Encryption** (done): `ITSAppUsesNonExemptEncryption = false` in the plist (HTTPS only),
+  so App Store Connect skips the export-compliance question.
 
 ## 2. Build the store binary
 
