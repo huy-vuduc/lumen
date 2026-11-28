@@ -2,7 +2,7 @@
 // fog and piece states on every change. The SVG scales with its container.
 const LumenBoard = (() => {
   const P = LumenPieces;
-  const { CELL, PAD, BEAM, DUSTY, KEYLINE, DARK_RING, centre, rgba, el } = P;
+  const { CELL, PAD, BEAM, ringColor, KEYLINE, DARK_RING, centre, rgba, el } = P;
   // Travel speed of a redrawn beam, slow enough to follow; instant when the
   // viewer asked for reduced motion (the stylesheet also drops the animation).
   const MS_PER_CELL = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 130;
@@ -111,7 +111,7 @@ const LumenBoard = (() => {
       const correct = !dark && hit === t.color;
       g.classList.toggle('lit', correct);
       g.classList.toggle('wrong', hit !== 0 && !correct);
-      ring.setAttribute('stroke', correct ? BEAM[t.color] : dark ? DARK_RING : DUSTY[t.color]);
+      ring.setAttribute('stroke', correct ? BEAM[t.color] : dark ? DARK_RING : ringColor(t.color));
       ring.style.filter = correct ? `drop-shadow(0 0 9px ${rgba(t.color === 7 ? DARK_RING : BEAM[t.color], 0.38)})` : '';
       core.setAttribute('r', correct ? 8 : 5);
       core.setAttribute('fill', correct ? BEAM[t.color] : BEAM[hit] || (dark ? DARK_RING : BEAM[t.color]));

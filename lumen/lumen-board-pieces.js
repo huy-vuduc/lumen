@@ -5,7 +5,9 @@ const LumenPieces = (() => {
   const CELL = 50, PAD = 4;
   const NS = 'http://www.w3.org/2000/svg';
   const BEAM = { 1: '#D0203F', 2: '#0F9E5E', 4: '#2F6BF0', 3: '#DDA100', 5: '#C02BB8', 6: '#0C9DB3', 7: '#FFFFFF' };
-  const DUSTY = { 1: '#A8475A', 2: '#4E8C6C', 4: '#5570BD', 3: '#A68A3A', 5: '#9A5698', 6: '#4A8E9B', 7: '#8A93A0' };
+  // An unlit ring wears its beam colour so the player knows which beam to
+  // guide there; a white ring would vanish on its white fill, so it is grey.
+  const ringColor = (color) => (color === 7 ? '#8A93A0' : BEAM[color]);
   const KEYLINE = { 3: '#8F6A00', 7: '#5B6170' };
   const ACCENT = '#44648A', DARK_RING = '#5B6170', PORTAL_B = '#9A5698';
 
@@ -90,7 +92,7 @@ const LumenPieces = (() => {
     const cx = centre(t.x), cy = centre(t.y);
     const dark = t.color === 0;
     const g = el('g', { class: dark ? 'target dark' : 'target' }, top);
-    const ring = el('circle', { cx, cy, r: 15, class: 'ring', fill: '#FFFFFF', 'stroke-width': 4, stroke: dark ? DARK_RING : DUSTY[t.color] }, g);
+    const ring = el('circle', { cx, cy, r: 15, class: 'ring', fill: '#FFFFFF', 'stroke-width': 4, stroke: dark ? DARK_RING : ringColor(t.color) }, g);
     const core = el('circle', { cx, cy, r: 8, class: 'core', fill: dark ? DARK_RING : BEAM[t.color] }, g);
     if (KEYLINE[t.color]) core.setAttribute('stroke', KEYLINE[t.color]);
     if (dark) el('line', { x1: cx - 5, y1: cy - 5, x2: cx + 5, y2: cy + 5, stroke: DARK_RING, 'stroke-width': 2.5, 'stroke-linecap': 'round', class: 'dark-mark' }, g);
@@ -111,5 +113,5 @@ const LumenPieces = (() => {
     return svg;
   }
 
-  return { CELL, PAD, BEAM, DUSTY, KEYLINE, DARK_RING, centre, rgba, el, wall, mirror, splitter, filter, portal, source, target, icon };
+  return { CELL, PAD, BEAM, ringColor, KEYLINE, DARK_RING, centre, rgba, el, wall, mirror, splitter, filter, portal, source, target, icon };
 })();

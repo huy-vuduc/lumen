@@ -26,6 +26,9 @@
 .board .mirror:focus-visible .mirror-hit { stroke: var(--accent); stroke-width: 2; rx: 11; }
 .board .source-disc { fill: #fff; filter: drop-shadow(0 6px 10px rgba(63, 86, 112, 0.16)) drop-shadow(0 1.5px 0 rgba(63, 86, 112, 0.16)); }
 .board .target .ring { transition: stroke 0.5s, fill 0.9s; }
+/* An unlit ring blinks so the player can find every target. */
+.board .target:not(.lit):not(.dark) .ring { animation: ring-blink 0.75s ease-in-out infinite; }
+@keyframes ring-blink { 50% { stroke-opacity: 0.3; } }
 .board .target.fogged .ring { fill: #E8ECF0; }
 .board .target .core { opacity: 0; transition: opacity 0.5s, r 0.5s; }
 .board .target.lit .core, .board .target.wrong .core { opacity: 1; }
@@ -66,7 +69,7 @@
 .card-modal .numeral { font-size: 34px; line-height: 40px; font-weight: 500; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
 
 @media (prefers-reduced-motion: reduce) {
-  .board .fog-cell, .board .mirror .mirror-bar, .board .target .core, .board .target .ring { transition: none; }
+  .board .fog-cell, .board .mirror .mirror-bar, .board .target .core, .board .target .ring { transition: none; animation: none; }
   .board .beam, .board .beam-impact, .board .mirror-tile.hinted, .game-solved { animation: none !important; }
 }
 

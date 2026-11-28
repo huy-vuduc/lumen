@@ -62,7 +62,9 @@ Red is darker than green on purpose (luminance 0.15 vs 0.25).
 - Source: disc 0.68 white, core 0.32 in beam colour with glow 0 0 10 2 at 40%. Never fogged.
   The disc sits under the beam layer and the core above it, so the beam leaves the core and runs over the disc (2026-11-20).
   The design's nub (0.2 x 0.14 along the emit direction) was dropped on 2026-11-19: the beam always covers it and the width step read as a glitch.
-- Target empty: ring 0.68, stroke 0.08, dusty tone of the needed colour (magenta #9A5698).
+- Target empty: ring 0.68, stroke 0.08, in the full beam colour (white rings grey #8A93A0), blinking
+  to 30% stroke opacity every 0.75 s until lit (2026-11-28; was a dusty tone, which players could not
+  match to a beam).
   Lit correct: ring and core in the full colour, white fill, halo 0 0 18 4 at 38%, fades in 500 ms.
   Lit wrong: ring stays dusty, small core 0.2 shows the arriving colour.
 - Wall (2026-11-26): stone block filling the whole cell, radius 0.1, fill #6E7786, foot shadow 0 2.5 0 at 35%; a pale facet (white 11%), a crack and a dark foot band make it rock, and neighbouring blocks bridge into one wall. A beam ending on stone leaves a blurred smudge of its colour on the face (0.7 opacity, scaled in over 240 ms on arrival).
