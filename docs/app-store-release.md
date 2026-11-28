@@ -54,9 +54,10 @@ with subtitle "Turn mirrors, guide the light".
 Fill in, per localization:
 
 - Description, keywords (100 chars), support URL and marketing URL (GitHub Pages works).
-- Screenshots: the iPhone 6.9" set (1320 x 2868) in `app/store/ios-6.9/`, captured from the
-  web build at 440 x 956 with device pixel ratio 3 and the Pro Max safe areas (62 top,
-  34 bottom); Igi (iPhone 11) is too small to capture from. iPad 13" (2064 x 2752) only
+- Screenshots: App Store Connect's "iPhone with Dynamic Island (medium display)" tab takes
+  1206 x 2622: `app/store/ios-6.3/`, captured from the web build at 402 x 874 with device
+  pixel ratio 3 and safe areas 62 top, 34 bottom. `app/store/ios-6.9/` (1320 x 2868) is the
+  large-display set if a tab asks for it. Igi (iPhone 11) is too small to capture from. iPad 13" (2064 x 2752) only
   if iPad becomes a target.
 - Category Games > Puzzle, secondary Casual. Price Free, all territories.
 - Age rating questionnaire: no objectionable content; "unrestricted web access" No;
