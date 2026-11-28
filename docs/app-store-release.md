@@ -42,22 +42,27 @@ signing problem shows up here, before review.
 
 ## 3. App Store Connect record (once)
 
-appstoreconnect.apple.com > My Apps > + > New App: platform iOS, bundle id
-`com.huyvu.lumen` (automatic signing already registered it), SKU `lumen`, primary
-language English, then add Vietnamese localization. "Lumen" alone is probably taken:
+First register the bundle id: developer.apple.com > Certificates, Identifiers & Profiles >
+Identifiers > + > App IDs > App, explicit `com.huyvu.lumen`, no capabilities. Xcode's
+automatic dev signing used the wildcard profile, so the explicit App ID did not exist and
+App Store Connect's Bundle ID list could not offer it. Then appstoreconnect.apple.com >
+My Apps > + > New App: platform iOS, that bundle id, SKU `lumen`, primary language
+English, then add Vietnamese localization. "Lumen" alone is probably taken:
 names must be unique, so use "Lumen – Light Puzzle" or "Lumen: Tia Sáng" (30 chars max)
 with subtitle "Turn mirrors, guide the light".
 
 Fill in, per localization:
 
 - Description, keywords (100 chars), support URL and marketing URL (GitHub Pages works).
-- Screenshots: iPhone 6.9" set (1320 x 2868) is required; add iPad 13" (2064 x 2752)
-  only if iPad stays a target. Take them from the iPhone 17 Pro Max simulator
-  (`xcrun simctl io booted screenshot`), not from Igi (iPhone 11 is too small).
+- Screenshots: the iPhone 6.9" set (1320 x 2868) in `app/store/ios-6.9/`, captured from the
+  web build at 440 x 956 with device pixel ratio 3 and the Pro Max safe areas (62 top,
+  34 bottom); Igi (iPhone 11) is too small to capture from. iPad 13" (2064 x 2752) only
+  if iPad becomes a target.
 - Category Games > Puzzle, secondary Casual. Price Free, all territories.
 - Age rating questionnaire: no objectionable content; "unrestricted web access" No;
   gambling No. Ads are declared in App Privacy, not here.
-- App Privacy: a privacy policy URL is mandatory. With AdMob + the tracking prompt,
+- App Privacy: privacy policy URL https://huy-vuduc.github.io/lumen/privacy.html
+  (`lumen/privacy.html`, English and Vietnamese; contact is the GitHub issues page). With AdMob + the tracking prompt,
   declare Identifiers (Device ID), Usage Data (Advertising Data, Product Interaction) and
   Diagnostics (Crash, Performance), collected by third parties, used for tracking when
   the player allows it. Nothing is collected if ads are removed.
