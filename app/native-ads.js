@@ -4,12 +4,19 @@
 import { Capacitor } from '@capacitor/core';
 import { AdMob, AdmobConsentStatus, RewardAdPluginEvents } from '@capacitor-community/admob';
 
-// Google's demo rewarded units: they always serve a test ad and never charge
-// an advertiser. Swap in the real units once the AdMob account is approved.
-const REWARDED_UNIT = {
+// Google's demo rewarded units always serve a test ad and never charge an
+// advertiser. Playtest builds (window.LUMEN_PLAYTEST, set by the build script)
+// use them so the owner's own plays never count as real traffic; release
+// builds use the real units. Android keeps the demo unit until its AdMob app exists.
+const DEMO_UNIT = {
   ios: 'ca-app-pub-3940256099942544/1712485313',
   android: 'ca-app-pub-3940256099942544/5224354917',
 };
+const LIVE_UNIT = {
+  ios: 'ca-app-pub-5322824922578152/7065862871',
+  android: DEMO_UNIT.android,
+};
+const REWARDED_UNIT = window.LUMEN_PLAYTEST ? DEMO_UNIT : LIVE_UNIT;
 
 if (Capacitor.isNativePlatform()) {
   const adId = REWARDED_UNIT[Capacitor.getPlatform()];

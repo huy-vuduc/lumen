@@ -5,10 +5,9 @@ bundle id `com.huyvu.lumen`, team `PVDWNW333Q`, version 1.0 (build 1).
 
 ## 1. Decide what ships (owner decisions)
 
-- **Ads.** `ios/App/App/Info.plist` (`GADApplicationIdentifier`) and
-  `app/native-ads.js` still hold Google's test IDs. Create the app in AdMob, add one
-  rewarded unit, paste the app ID into the plist and the unit ID into `native-ads.js`.
-  Test ads in a store build earn nothing and AdMob can flag the account.
+- **Ads** (done 2026-11-28): the real iOS AdMob app ID is in the plist and the rewarded unit in
+  `app/native-ads.js`; only `--release` builds use it, playtest builds keep Google's demo unit.
+  After the app is live, link the store listing in AdMob so the app gets approved there.
 - **Devices and orientation** (done 2026-11-28): iPhone-only (`TARGETED_DEVICE_FAMILY = 1`,
   iPad later) and portrait only, so review never sees the 390-wide board sideways or
   stretched; iPad screenshots are not required.
@@ -30,10 +29,10 @@ Same from the terminal:
 
 ```sh
 xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
-  -destination 'generic/platform=iOS' -archivePath build/Lumen.xcarchive \
+  -destination 'generic/platform=iOS' -archivePath ios/build/Lumen.xcarchive \
   -allowProvisioningUpdates archive
-xcodebuild -exportArchive -archivePath build/Lumen.xcarchive \
-  -exportOptionsPlist ios/App/export-options.plist -exportPath build/export \
+xcodebuild -exportArchive -archivePath ios/build/Lumen.xcarchive \
+  -exportOptionsPlist ios/App/export-options.plist -exportPath ios/build/export \
   -allowProvisioningUpdates
 ```
 

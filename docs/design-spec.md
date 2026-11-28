@@ -158,8 +158,9 @@ Vietnamese subsets, 300 to 600) so the app and the site work offline. The app ic
 blue #2F6BF0 beam that meets the mirror bar and turns, the turn drawing an L, flat on the
 chapter 1 board tone #FCF8F0 with no baked corners (`app/icon/logo.svg`); the Android
 adaptive foreground is the same glyph scaled 1.2x on a transparent layer so it fills the
-safe zone once the generator insets it (`app/icon/icon-foreground.svg`). AdMob IDs
-are Google's test IDs until the account is approved. Haptics go through `@capacitor/haptics` (`app/native-haptics.js`: light impact on a
+safe zone once the generator insets it (`app/icon/icon-foreground.svg`). The iOS AdMob app
+and rewarded unit are real (2026-11-28); release builds use them, playtest builds use
+Google's demo unit. Android keeps the test IDs until its AdMob app exists. Haptics go through `@capacitor/haptics` (`app/native-haptics.js`: light impact on a
 tap, success and warning notifications) because WKWebView has no `navigator.vibrate`.
 Screens pad for the notch and home indicator with `env(safe-area-inset-*)`; the game
 header sits just above the board (2026-11-27).
